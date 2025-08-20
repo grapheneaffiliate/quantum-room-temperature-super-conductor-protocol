@@ -61,7 +61,7 @@ quantum-rtsc-protocol/
 
 ### Installation
 ```bash
-git clone https://github.com/yourusername/quantum-rtsc-protocol.git
+git clone https://github.com/grapheneaffiliate/quantum-rtsc-protocol.git
 cd quantum-rtsc-protocol
 pip install -r requirements.txt
 ```
