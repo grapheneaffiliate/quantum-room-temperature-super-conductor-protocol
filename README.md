@@ -24,13 +24,13 @@ This repository provides all necessary documentation, analysis tools, LaTeX temp
 
 ## 📂 Key Files
 
-- [RTSC Cover Page](RTSC_CoverPage.tex)
-- [MiniDeck Slides](RTSC_MiniDeck.tex)
-- [One-Page Traveler](RTSC_Traveler.tex)
-- [Mask Generator](mask_generator.py)
-- [Superconductivity Analysis](supercon_analysis.py)
-- [Enhanced RTSC Calculator](rtsc_calculator.py)
-- [Unit Tests](test_calculations.py)
+- [RTSC Cover Page](docs/RTSC_CoverPage.tex)
+- [MiniDeck Slides](docs/RTSC_MiniDeck.tex)
+- [One-Page Traveler](traveler/RTSC_Traveler.tex)
+- [Mask Generator](masks/mask_generator.py)
+- [Superconductivity Analysis](analysis/supercon_analysis.py)
+- [Enhanced RTSC Calculator](tools/rtsc_calculator.py)
+- [Unit Tests](tests/test_calculations.py)
 
 ## 📂 Repository Structure
 
