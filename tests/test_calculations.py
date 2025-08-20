@@ -1,45 +1,72 @@
-import importlib.util, pathlib, numpy as np
+"""
+Unit tests for RTSC Calculator and Analysis Tools
+"""
 
-# Dynamically import supercon_analysis and rtsc_calculator
-spec_sa = importlib.util.spec_from_file_location(
-    "supercon_analysis",
-    str(pathlib.Path(__file__).resolve().parents[1] / "analysis" / "supercon_analysis.py")
-)
-supercon_analysis = importlib.util.module_from_spec(spec_sa)
-spec_sa.loader.exec_module(supercon_analysis)
+import numpy as np
+import pytest
+from tools.rtsc_calculator import RTSCCalculator
 
-spec_calc = importlib.util.spec_from_file_location(
-    "rtsc_calculator",
-    str(pathlib.Path(__file__).resolve().parents[1] / "tools" / "rtsc_calculator.py")
-)
-rtsc_calculator = importlib.util.module_from_spec(spec_calc)
-spec_calc.loader.exec_module(rtsc_calculator)
+def test_tc_calculation_basic():
+    calc = RTSCCalculator()
+    tc = calc.calculate_tc(omega_log=140, lambda_eff=2.7, mu_star=0.10)
+    assert tc > 250 and tc < 400, f"Tc out of expected range: {tc}"
 
-def test_weighted_log_average():
-    freqs = [100, 150, 200]
-    weights = [0.2, 0.5, 0.3]
-    result = supercon_analysis.weighted_log_average(freqs, weights)
-    assert result > 0
-    assert 100 < result < 200
-
-def test_allen_dynes_tc():
-    tc = supercon_analysis.allen_dynes_tc(omega_log_mev=130, lambda_h=2.0, lambda_plasmon=0.4, lambda_flat=0.2, mu_star=0.12)
-    assert tc > 250  # should be in RTSC range
-
-def test_gap_to_tc_ratio():
-    ratio = supercon_analysis.gap_to_tc_ratio(delta_mev=130, tc_k=300)  # Use higher delta for stronger coupling
-    assert ratio > 4.5
+def test_gap_calculation():
+    calc = RTSCCalculator()
+    tc = 300
+    lambda_eff = 2.7
+    gap = calc.calculate_gap(tc, lambda_eff)
+    assert gap > 50, "Gap should be > 50 meV for strong coupling"
 
 def test_multi_channel_lambda():
-    lam_eff = rtsc_calculator.multi_channel_lambda(2.0, 0.4, 0.2)
-    assert np.isclose(lam_eff, 2.6)
+    calc = RTSCCalculator()
+    lambda_eff = calc.calculate_multi_channel_lambda(1.8, 0.5, 0.4)
+    assert abs(lambda_eff - 2.7) < 1e-6
 
-def test_spectral_weight_factor():
-    f_omega = rtsc_calculator.spectral_weight_factor(0.8, 0.2)
-    assert np.isclose(f_omega, 4.0)
+def test_omega_log_calculation():
+    calc = RTSCCalculator()
+    freqs = np.linspace(10, 300, 100)
+    alpha2f = np.exp(-((freqs - 150) / 20)**2)
+    omega_log = calc.calculate_omega_log(freqs, alpha2f)
+    assert omega_log > 100 and omega_log < 200
 
-def test_validate_acceptance():
-    results = rtsc_calculator.validate_acceptance(omega_log=130, delta_mev=65, tc_k=300)
-    assert results["omega_log_pass"]
-    assert results["gap_pass"]
-    assert results["ratio_pass"]
+def test_f_omega_calculation():
+    calc = RTSCCalculator()
+    freqs = np.linspace(10, 300, 100)
+    alpha2f = np.zeros_like(freqs)
+    alpha2f[freqs > 120] = 1.0
+    f_omega = calc.calculate_f_omega(freqs, alpha2f, omega_cutoff=100)
+    assert f_omega > 1.0
+
+def test_validation_pass():
+    calc = RTSCCalculator()
+    validation = calc.validate_rtsc_parameters(omega_log=140, lambda_eff=2.7, mu_star=0.10, f_omega=1.5)
+    assert validation['overall_pass'] is True
+
+def test_validation_fail():
+    calc = RTSCCalculator()
+    validation = calc.validate_rtsc_parameters(omega_log=100, lambda_eff=1.0, mu_star=0.20, f_omega=1.0)
+    assert validation['overall_pass'] is False
+
+def test_synthetic_data_generation():
+    calc = RTSCCalculator()
+    params = {'omega_log': 140, 'lambda_eff': 2.7, 'mu_star': 0.10, 'tc': 320}
+    data = calc.generate_synthetic_data(params)
+    assert 'temperature' in data and 'resistance' in data
+    assert len(data['temperature']) == 100
+    assert data['omega_log_calculated'] > 100
+    assert data['f_omega_calculated'] > 1.0
+
+def test_parameter_optimization():
+    calc = RTSCCalculator()
+    optimal = calc.optimize_parameters(target_tc=300)
+    assert abs(optimal['predicted_tc'] - 300) < 10
+    assert optimal['lambda_eff'] > 2.0
+
+def test_sensitivity_analysis():
+    calc = RTSCCalculator()
+    base_params = {'omega_log': 140, 'lambda_eff': 2.7, 'mu_star': 0.10}
+    sensitivity = calc.sensitivity_analysis(base_params)
+    assert 'd_tc_d_omega_log' in sensitivity
+    assert 'd_tc_d_lambda_eff' in sensitivity
+    assert 'd_tc_d_mu_star' in sensitivity

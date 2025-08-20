@@ -1,104 +1,131 @@
-from __future__ import annotations
-import json, os
+"""
+Superconductivity Analysis Tools for RTSC Protocol
+
+This module provides higher-level analysis workflows built on top of the
+RTSCCalculator. It includes data visualization, parameter sweeps, and
+integration with experimental datasets.
+
+Dependencies:
+- numpy
+- matplotlib
+- pandas
+- seaborn
+
+Usage:
+from analysis.supercon_analysis import SuperconAnalysis
+
+analysis = SuperconAnalysis()
+analysis.plot_parameter_space()
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 import pandas as pd
-import importlib.util, pathlib
+from tools.rtsc_calculator import RTSCCalculator
 
-# dynamic import of rtsc_calculator
-spec_calc = importlib.util.spec_from_file_location(
-    "rtsc_calculator",
-    str(pathlib.Path(__file__).resolve().parents[0].parent / "tools" / "rtsc_calculator.py")
-)
-rtsc_calculator = importlib.util.module_from_spec(spec_calc)
-spec_calc.loader.exec_module(rtsc_calculator)
+class SuperconAnalysis:
+    """High-level analysis and visualization tools for RTSC protocol."""
+    
+    def __init__(self):
+        self.calc = RTSCCalculator()
+        sns.set_theme(style="whitegrid")
+    
+    def plot_parameter_space(self, omega_range=(100, 200), lambda_range=(1.5, 3.5), resolution=50):
+        """Plot Tc as a function of ω_log and λ_eff."""
+        param_map = self.calc.create_parameter_space_map(omega_range, lambda_range, resolution)
+        
+        plt.figure(figsize=(10, 8))
+        contour = plt.contourf(param_map['omega_log'], param_map['lambda_eff'], param_map['tc'], 
+                              levels=50, cmap='viridis')
+        plt.colorbar(contour, label="Tc (K)")
+        plt.contour(param_map['omega_log'], param_map['lambda_eff'], param_map['rtsc_region'], 
+                   levels=[0.5], colors='red', linewidths=2)
+        plt.xlabel("ω_log (meV)")
+        plt.ylabel("λ_eff")
+        plt.title("RTSC Parameter Space Map")
+        plt.show()
+    
+    def plot_gap_vs_temperature(self, tc=300, lambda_eff=2.7):
+        """Plot superconducting gap as a function of temperature."""
+        gap_0 = self.calc.calculate_gap(tc, lambda_eff)
+        temperatures = np.linspace(0, tc, 200)
+        gaps = [self.calc.calculate_gap_at_temperature(gap_0, T, tc) for T in temperatures]
+        
+        plt.figure(figsize=(8, 6))
+        plt.plot(temperatures, gaps, label=f"λ_eff={lambda_eff}")
+        plt.axhline(gap_0, color='gray', linestyle='--', label="Δ(0)")
+        plt.xlabel("Temperature (K)")
+        plt.ylabel("Gap Δ (meV)")
+        plt.title("Superconducting Gap vs Temperature")
+        plt.legend()
+        plt.show()
+    
+    def plot_synthetic_data(self, params=None):
+        """Generate and plot synthetic experimental data."""
+        if params is None:
+            params = {'omega_log': 140, 'lambda_eff': 2.7, 'mu_star': 0.10, 'tc': 320}
+        
+        data = self.calc.generate_synthetic_data(params)
+        
+        fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+        
+        # Resistance vs Temperature
+        axes[0, 0].plot(data['temperature'], data['resistance'])
+        axes[0, 0].set_xlabel("Temperature (K)")
+        axes[0, 0].set_ylabel("Resistance (Ω)")
+        axes[0, 0].set_title("Resistance vs Temperature")
+        
+        # Gap vs Temperature
+        axes[0, 1].plot(data['temperature'], data['gaps'])
+        axes[0, 1].set_xlabel("Temperature (K)")
+        axes[0, 1].set_ylabel("Gap Δ (meV)")
+        axes[0, 1].set_title("Gap vs Temperature")
+        
+        # α²F(ω)
+        axes[1, 0].plot(data['frequencies'], data['alpha2f'])
+        axes[1, 0].set_xlabel("Frequency (meV)")
+        axes[1, 0].set_ylabel("α²F(ω)")
+        axes[1, 0].set_title("Eliashberg Function α²F(ω)")
+        
+        # Summary text
+        summary = f"ω_log = {data['omega_log_calculated']:.1f} meV\nf_ω = {data['f_omega_calculated']:.2f}"
+        axes[1, 1].axis('off')
+        axes[1, 1].text(0.1, 0.5, summary, fontsize=12)
+        
+        plt.tight_layout()
+        plt.show()
+    
+    def analyze_experimental_csv(self, filepath: str):
+        """Load and analyze experimental CSV data (temperature vs resistance)."""
+        df = pd.read_csv(filepath)
+        if 'Temperature' not in df.columns or 'Resistance' not in df.columns:
+            raise ValueError("CSV must contain 'Temperature' and 'Resistance' columns")
+        
+        temperatures = df['Temperature'].values
+        resistance = df['Resistance'].values
+        
+        # Estimate Tc as midpoint of resistance drop
+        r_norm = (resistance - resistance.min()) / (resistance.max() - resistance.min())
+        tc_index = np.argmin(np.abs(r_norm - 0.5))
+        tc_estimated = temperatures[tc_index]
+        
+        plt.figure(figsize=(8, 6))
+        plt.plot(temperatures, resistance, label="Experimental Data")
+        plt.axvline(tc_estimated, color='red', linestyle='--', label=f"Estimated Tc = {tc_estimated:.1f} K")
+        plt.xlabel("Temperature (K)")
+        plt.ylabel("Resistance (Ω)")
+        plt.title("Experimental Resistance vs Temperature")
+        plt.legend()
+        plt.show()
+        
+        return {"tc_estimated": tc_estimated, "data_points": len(df)}
 
-def allen_dynes_tc(omega_log_mev: float, lambda_h: float, lambda_plasmon: float, lambda_flat: float, mu_star: float) -> float:
-    """Wrapper for allen_dynes_tc with multi-channel support."""
-    lambda_eff = rtsc_calculator.multi_channel_lambda(lambda_h, lambda_plasmon, lambda_flat)
-    return rtsc_calculator.allen_dynes_tc(lambda_eff, mu_star, omega_log_mev)
-# define MEV_TO_K locally (avoid missing attribute)
-MEV_TO_K = 11.6045
-
-# dynamic import of validators
-spec_val = importlib.util.spec_from_file_location(
-    "validators",
-    str(pathlib.Path(__file__).resolve().parents[0] / "validators.py")
-)
-validators = importlib.util.module_from_spec(spec_val)
-spec_val.loader.exec_module(validators)
-evaluate_transport = validators.evaluate_transport
-evaluate_susceptibility = validators.evaluate_susceptibility
-evaluate_raman_gap = validators.evaluate_raman_gap
-
-def kB_eV_per_K() -> float:
-    return 8.617333262e-5  # eV/K
-
-def two_delta0_meV(tc_k: float, ratio_2delta_over_kbT: float = 3.53) -> float:
-    # 2Δ0 = (2Δ0/kB Tc) * kB * Tc, default BCS weak-coupling 3.53; strong coupling can be ~4–5+
-    return ratio_2delta_over_kbT * kB_eV_per_K() * tc_k * 1000.0
-
-def weighted_log_average(freqs, weights):
-    """Calculate weighted logarithmic average of frequencies."""
-    import numpy as np
-    freqs = np.array(freqs)
-    weights = np.array(weights)
-    weights = weights / weights.sum()  # normalize
-    return np.exp(np.sum(weights * np.log(freqs)))
-
-def gap_to_tc_ratio(delta_mev: float, tc_k: float) -> float:
-    """Calculate 2Δ/kB*Tc ratio."""
-    kb_mev_per_k = kB_eV_per_K() * 1000  # convert to meV/K
-    return delta_mev / (kb_mev_per_k * tc_k)
-
-def run(in_dir: str, out_dir: str,
-        omega_log_mev: float, lambda_h: float, lambda_plasmon: float, lambda_flat: float,
-        mu_star: float, two_delta_ratio: float = 3.53):
-    os.makedirs(out_dir, exist_ok=True)
-
-    # Load data
-    df_iv = pd.read_csv(os.path.join(in_dir, "iv_4probe.csv"))
-    df_chi = pd.read_csv(os.path.join(in_dir, "ac_susceptibility.csv"))
-    df_raman = pd.read_csv(os.path.join(in_dir, "raman.csv"))
-
-    # Theory Tc
-    tc_pred = allen_dynes_tc(omega_log_mev, lambda_h, lambda_plasmon, lambda_flat, mu_star)
-    two_delta_mev = two_delta0_meV(tc_pred, two_delta_ratio)
-
-    # Measurements → validators
-    tr = evaluate_transport(df_iv)
-    sr = evaluate_susceptibility(df_chi)
-    rr = evaluate_raman_gap(df_raman, expected_2delta_mev=two_delta_mev)
-
-    # Aggregate verdict
-    passes = [tr.passed, sr.passed, rr.passed]
-    verdict = "PASS" if all(passes) else "FAIL"
-
-    # Write JSON report
-    report = {
-        "inputs": {
-            "omega_log_mev": omega_log_mev,
-            "lambda_h": lambda_h,
-            "lambda_plasmon": lambda_plasmon,
-            "lambda_flat": lambda_flat,
-            "mu_star": mu_star,
-            "two_delta_ratio": two_delta_ratio
-        },
-        "theory": {"Tc_pred_K": tc_pred, "twoDelta0_meV": two_delta_mev},
-        "transport": tr.__dict__,
-        "susceptibility": sr.__dict__,
-        "raman": rr.__dict__,
-        "verdict": verdict
-    }
-    with open(os.path.join(out_dir, "report.json"), "w") as f:
-        json.dump(report, f, indent=2)
-    print(f"Wrote {os.path.join(out_dir, 'report.json')}")
-    print(f"VERDICT: {verdict}")
+def demo():
+    analysis = SuperconAnalysis()
+    analysis.plot_parameter_space()
+    analysis.plot_gap_vs_temperature()
+    analysis.plot_synthetic_data()
 
 if __name__ == "__main__":
-    # Default demo parameters (adjust to taste)
-    run(
-        in_dir="examples/sample_data",
-        out_dir="reports/demo",
-        omega_log_mev=135.0,
-        lambda_h=1.9, lambda_plasmon=0.6, lambda_flat=0.25,
-        mu_star=0.10, two_delta_ratio=3.53
-    )
+    demo()
