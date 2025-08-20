@@ -11,6 +11,16 @@ This repository provides all necessary documentation, analysis tools, LaTeX temp
 
 ---
 
+## 📂 Key Files
+
+- [RTSC Cover Page](RTSC_CoverPage.tex)
+- [MiniDeck Slides](RTSC_MiniDeck.tex)
+- [One-Page Traveler](RTSC_Traveler.tex)
+- [Mask Generator](mask_generator.py)
+- [Superconductivity Analysis](supercon_analysis.py)
+- [Enhanced RTSC Calculator](rtsc_calculator.py)
+- [Unit Tests](test_calculations.py)
+
 ## 📂 Repository Structure
 
 ```
