@@ -1,5 +1,16 @@
 # 🧪 Quantum RTSC Protocol
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![CI](https://github.com/grapheneaffiliate/quantum-rtsc-protocol/workflows/CI/badge.svg)](https://github.com/grapheneaffiliate/quantum-rtsc-protocol/actions)
+[![DOI](https://img.shields.io/badge/DOI-pending-orange.svg)](https://github.com/grapheneaffiliate/quantum-rtsc-protocol)
+
+**Open-source protocol for room-temperature superconductivity in hydrogen-intercalated graphene/h-BN heterostructures**
+
+🎯 **Goal**: Achieve Tc ≥ 300K using conventional Eliashberg physics  
+📊 **Status**: Protocol v1.0 - Ready for experimental validation  
+🔬 **Method**: Trap-and-clamp hydrogen stabilization with systematic validation
+
 A comprehensive, reproducible **Room-Temperature Superconductivity (RTSC) Protocol** package targeting the Allen–Dynes success region:
 
 - **ω_log ≥ 120 meV**
@@ -92,6 +103,17 @@ pytest tests/
 
 ## 📄 License
 MIT License
+
+---
+
+## 🏆 Challenge to the Community
+
+**The first laboratory to achieve verified Tc ≥ 200K using this protocol will be:**
+- Featured as co-authors on our publication
+- Invited to collaborate on v2.0 development
+- Acknowledged in all future citations
+
+**Submit your results via GitHub Issues with complete data.**
 
 ---
 
