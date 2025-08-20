@@ -1,0 +1,62 @@
+\documentclass[12pt]{article}
+\usepackage[margin=0.75in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage{enumitem}
+\setlist{nosep}
+
+\begin{document}
+\begin{center}
+{\Large \textbf{RTSC One-Page Traveler}}\\[6pt]
+\textbf{Instructor Edition}\\
+\textbf{August 2025}
+\end{center}
+
+\section*{Orientation (5--8 min)}
+Goal: Build H-graphene sandwich, lock high-$\omega$ H modes, tune carriers/strain, prove superconductivity at $\sim$300 K.\\
+Target tuple: $\omega_{\log}\ge120$ meV, $\lambda_{\rm eff}\approx2.5$--$2.7$, $\mu^*\le0.12$, $f_\omega\ge1.35$.
+
+\section*{Equipment \& Materials}
+\begin{itemize}
+  \item ISO 5--7 cleanroom, UHV cluster with atomic-H source
+  \item Probe station, Raman, FTIR, XPS, STM/STS
+  \item AC susceptibility coil, NdFeB magnets
+  \item Substrates: sapphire or 4H-SiC, h-BN, graphene
+  \item Pd, Cr/Au, ALD Al$_2$O$_3$, PECVD SiN$_x$
+  \item Ionic liquid DEME-TFSI or ALD HfO$_2$
+\end{itemize}
+
+\section*{7-Day Fabrication}
+\begin{enumerate}
+  \item \textbf{Day 1:} Substrate clean, h-BN/graphene transfer, anneal
+  \item \textbf{Days 2--4:} Two-sided H exposure (350--420$^\circ$C, 12--36 h/face)
+  \item \textbf{Days 4--5:} Pd trap, ALD Al$_2$O$_3$ (20 nm), PECVD SiN$_x$ (80 nm), sapphire cap
+  \item \textbf{Days 6--7:} Patterning, Cr/Au contacts, Dayem bridge, gating
+\end{enumerate}
+
+\section*{7-Day Measurement}
+\begin{enumerate}
+  \item \textbf{Days 1--2:} Raman/FTIR $\Rightarrow \omega_{\log}$
+  \item \textbf{Days 3--4:} STS/IETS $\Rightarrow \Delta$, $\alpha^2F(\omega)$
+  \item \textbf{Day 5:} 4-probe $R(T)$, pulsed I--V
+  \item \textbf{Day 6:} AC-$\chi$, Meissner test
+  \item \textbf{Day 7:} Josephson/Shapiro (optional)
+\end{enumerate}
+
+\section*{Acceptance Criteria}
+\begin{itemize}
+  \item $\omega_{\log}\ge120$ meV
+  \item $\Delta(300\text{ K})\ge58$ meV, $2\Delta/k_BT_c\ge4.5$
+  \item $R\to0$ reproducible, Meissner onset $\pm1$ K
+\end{itemize}
+
+\section*{Artifact Rejection}
+\begin{itemize}
+  \item Remove ionic liquid, replicate with solid gate
+  \item STS uniformity $\ge90\%$
+  \item Pulsed vs DC I--V identical
+  \item B-field suppression test
+\end{itemize}
+
+\end{document}
