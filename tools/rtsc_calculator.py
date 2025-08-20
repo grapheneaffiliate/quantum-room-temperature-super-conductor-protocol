@@ -44,13 +44,37 @@ def validate_acceptance(omega_log, delta_mev, tc_k):
     }
 
 if __name__ == "__main__":
-    # Example usage
-    lam_eff = multi_channel_lambda(lambda_h=2.0, lambda_plasmon=0.4, lambda_flat=0.2)
-    f_omega = spectral_weight_factor(high_omega_weight=0.8, low_omega_weight=0.2)
-    print("λ_eff =", lam_eff, "f_ω =", f_omega)
+    import sys
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="RTSC Calculator")
+    subparsers = parser.add_subparsers(dest='command', help='Available commands')
+    
+    # Add calc subcommand
+    calc_parser = subparsers.add_parser('calc', help='Calculate Tc')
+    calc_parser.add_argument('--omega-log-mev', type=float, default=130, help='Log-averaged phonon frequency in meV')
+    calc_parser.add_argument('--lambda-h', type=float, default=2.0, help='Hydrogen coupling')
+    calc_parser.add_argument('--lambda-plasmon', type=float, default=0.4, help='Plasmon coupling')
+    calc_parser.add_argument('--lambda-flat', type=float, default=0.2, help='Flat band coupling')
+    calc_parser.add_argument('--mu-star', type=float, default=0.12, help='Coulomb pseudopotential')
+    
+    if len(sys.argv) == 1:
+        # Default example usage
+        lam_eff = multi_channel_lambda(lambda_h=2.0, lambda_plasmon=0.4, lambda_flat=0.2)
+        f_omega = spectral_weight_factor(high_omega_weight=0.8, low_omega_weight=0.2)
+        print("λ_eff =", lam_eff, "f_ω =", f_omega)
 
-    tc = allen_dynes_tc(lam_eff, mu_star=0.12, omega_log_mev=130)
-    print("Estimated Tc =", tc, "K")
+        tc = allen_dynes_tc(lam_eff, mu_star=0.12, omega_log_mev=130)
+        print("Estimated Tc =", tc, "K")
 
-    results = validate_acceptance(omega_log=130, delta_mev=65, tc_k=tc)
-    print("Acceptance:", results)
+        results = validate_acceptance(omega_log=130, delta_mev=65, tc_k=tc)
+        print("Acceptance:", results)
+    else:
+        args = parser.parse_args()
+        
+        if args.command == 'calc':
+            lam_eff = multi_channel_lambda(args.lambda_h, args.lambda_plasmon, args.lambda_flat)
+            tc = allen_dynes_tc(lam_eff, args.mu_star, args.omega_log_mev)
+            print(f"Tc = {tc:.2f} K")
+        else:
+            parser.print_help()
