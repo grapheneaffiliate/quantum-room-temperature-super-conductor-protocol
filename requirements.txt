@@ -1,1 +1,8 @@
-numpy\nscipy\npandas\nmatplotlib\ngdspy\ntyper\nrich\npytest
+numpy
+scipy
+pandas
+matplotlib
+gdspy
+typer
+rich
+pytest

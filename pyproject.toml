@@ -1,2 +1,9 @@
-[build-system]\nrequires = [\
-setuptools>=68\, \wheel\]\nbuild-backend = \setuptools.build_meta\\n\n[project]\nname = \quantum-rtsc-protocol\\nversion = \0.1.0\\nrequires-python = \>=3.9\\ndependencies = [\numpy\,\scipy\,\pandas\,\matplotlib\,\gdspy\,\typer\,\rich\]
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quantum-rtsc-protocol"
+version = "0.1.0"
+requires-python = ">=3.9"
+dependencies = ["numpy","scipy","pandas","matplotlib","gdspy","typer","rich"]
