@@ -4,7 +4,7 @@ Unit tests for RTSC Calculator and Analysis Tools
 
 import numpy as np
 import pytest
-from tools.rtsc_calculator import RTSCCalculator
+from quantum_rtsc_protocol.tools.rtsc_calculator import RTSCCalculator
 
 def test_tc_calculation_basic():
     calc = RTSCCalculator()

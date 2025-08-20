@@ -12,7 +12,7 @@ Dependencies:
 - seaborn
 
 Usage:
-from analysis.supercon_analysis import SuperconAnalysis
+from quantum_rtsc_protocol.analysis.supercon_analysis import SuperconAnalysis
 
 analysis = SuperconAnalysis()
 analysis.plot_parameter_space()
@@ -22,7 +22,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
-from tools.rtsc_calculator import RTSCCalculator
+from quantum_rtsc_protocol.tools.rtsc_calculator import RTSCCalculator
 
 class SuperconAnalysis:
     """High-level analysis and visualization tools for RTSC protocol."""
