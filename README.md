@@ -26,6 +26,7 @@ This repository provides all necessary documentation, analysis tools, LaTeX temp
 
 ## 📂 Key Files
 
+- [Fabrication SOP](docs/Fabrication_SOP.md)
 - [RTSC Cover Page](docs/RTSC_CoverPage.tex)
 - [MiniDeck Slides](docs/RTSC_MiniDeck.tex)
 - [One-Page Traveler](traveler/RTSC_Traveler.tex)
@@ -44,9 +45,9 @@ quantum-rtsc-protocol/
 ├── .github/
 │   └── workflows/ci.yml       # CI/CD pipeline
 ├── docs/
+│   ├── Fabrication_SOP.md     # Fabrication Standard Operating Procedure
 │   ├── RTSC_CoverPage.tex     # Protocol cover page
 │   ├── RTSC_MiniDeck.tex      # Beamer mini-deck
-│   └── protocol_guide.md      # Full protocol guide
 ├── traveler/
 │   ├── RTSC_Traveler.tex      # One-page traveler
 │   └── RTSC_Traveler.pdf
