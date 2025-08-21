@@ -31,28 +31,24 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          python -m pip install --upgrade pip wheel setuptools
           pip install -r requirements.txt
           pip install pytest
 
       - name: Run unit tests
         run: pytest -q
 
-      # Prefer calling the pipeline module directly; fallback to Makefile
       - name: Build demo artifacts
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p out/demo
           python - <<'PY'
-          import sys, pathlib
-          out = pathlib.Path("out/demo")
-          out.mkdir(parents=True, exist_ok=True)
-          # Try package module first, fallback import path
+          import sys, pathlib, importlib.util
+          out = pathlib.Path("out/demo"); out.mkdir(parents=True, exist_ok=True)
           try:
               from quantum_rtsc_protocol.tools.rtsc_pipeline import main as run
           except Exception:
-              import importlib.util, os
               spec = importlib.util.spec_from_file_location(
                   "rtsc_pipeline", "quantum_rtsc_protocol/tools/rtsc_pipeline.py"
               )
@@ -67,7 +63,7 @@ jobs:
           test -s out/demo/rtsc_analysis_dashboard.png
           python - <<'PY'
           import json; d=json.load(open('out/demo/rtsc_results.json'))
-          assert 'timestamp' in d and 'tc_estimate_K' in d and 'success_probability' in d
+          assert {'timestamp','tc_estimate_K','success_probability'} <= d.keys()
           PY
 
       - name: Upload demo artifacts
