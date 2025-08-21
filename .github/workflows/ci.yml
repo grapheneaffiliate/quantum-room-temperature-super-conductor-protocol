@@ -38,7 +38,7 @@ jobs:
         python - << 'PY'
         import json, sys
         d = json.load(open('out/demo/rtsc_results.json'))
-        assert 'timestamp' in d and 'tc_prediction' in d and 'success_assessment' in d
+        assert 'timestamp' in d and 'tc_estimate_K' in d and 'success_probability' in d
         PY
 
     - name: Upload demo artifacts

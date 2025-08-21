@@ -516,18 +516,29 @@ Current vs. Validated Targets:
         print()
         
         # Step 7: Save results as JSON
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        timestamp = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
         results = {
             'timestamp': timestamp,
-            'input_file': input_file,
-            'spectrum_analysis': {k: v for k, v in spectrum_analysis.items() if k != 'channels'},
-            'tc_prediction': tc_prediction,
-            'success_assessment': success_assessment,
-            'optimization_suggestions': self.generate_optimization_suggestions(spectrum_analysis, tc_prediction),
-            'generated_files': {
-                'dashboard': dashboard_file,
-                'masks': mask_files,
-                'report': str(report_file)
+            'tc_estimate_K': tc_prediction['tc_mean'],
+            'success_probability': {
+                'rtsc_300K': success_assessment['success_probability']
+            },
+            'inputs': {
+                'omega_meV': spectrum_analysis['omega_log'],
+                'lambda_eff': spectrum_analysis['lambda_total'],
+                'mu_star': mu_star,
+                'f_omega': spectrum_analysis['f_omega']
+            },
+            'detailed_analysis': {
+                'spectrum_analysis': {k: v for k, v in spectrum_analysis.items() if k != 'channels'},
+                'tc_prediction': tc_prediction,
+                'success_assessment': success_assessment,
+                'optimization_suggestions': self.generate_optimization_suggestions(spectrum_analysis, tc_prediction),
+                'generated_files': {
+                    'dashboard': dashboard_file,
+                    'masks': mask_files,
+                    'report': str(report_file)
+                }
             }
         }
         
