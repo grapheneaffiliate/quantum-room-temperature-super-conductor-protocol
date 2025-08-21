@@ -1,38 +1,45 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "RTSC Results Schema",
+  "title": "RTSC Calculation Results",
+  "description": "Schema for Allen-Dynes superconductivity calculation results",
   "type": "object",
+  "required": ["provenance","inputs","derived","results","status"],
   "properties": {
-    "timestamp": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "tc_estimate_K": {
-      "type": "number",
-      "description": "Estimated superconducting transition temperature in Kelvin"
-    },
-    "success_probability": {
+    "provenance": {
       "type": "object",
+      "description": "Metadata about when and how the calculation was performed",
       "properties": {
-        "rtsc_300K": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1,
-          "description": "Probability that Tc ≥ 300 K"
-        }
-      },
-      "required": ["rtsc_300K"]
+        "timestamp_utc": {"type":"string", "description": "ISO 8601 UTC timestamp"},
+        "git_sha": {"type":["string","null"], "description": "Git commit SHA if available"}
+      }
     },
     "inputs": {
-      "type": "object",
-      "properties": {
-        "omega_meV": { "type": "number" },
-        "lambda_eff": { "type": "number" },
-        "mu_star": { "type": "number" },
-        "f_omega": { "type": "number" }
-      },
-      "required": ["omega_meV", "lambda_eff", "mu_star", "f_omega"]
-    }
-  },
-  "required": ["timestamp", "tc_estimate_K", "success_probability", "inputs"]
+      "type":"object",
+      "description": "Input parameters for the Allen-Dynes calculation",
+      "required":["omega_log","omega_units","lambda","mu_star","f_omega"],
+      "properties":{
+        "omega_log":{"type":"number","minimum":0, "description": "Logarithmic average phonon frequency"},
+        "omega_units":{"type":"string","enum":["meV","K"], "description": "Units for omega_log"},
+        "lambda":{"type":"number","exclusiveMinimum":0, "description": "Electron-phonon coupling constant"},
+        "mu_star":{"type":"number","exclusiveMinimum":0,"exclusiveMaximum":0.3, "description": "Coulomb pseudopotential"},
+        "f_omega":{"type":"number","minimum":1.0,"maximum":1.5, "description": "Shape factor for phonon spectrum"}
+      }
+    },
+    "derived": {
+      "type":"object",
+      "description": "Intermediate calculated values",
+      "required":["omega_log_K","denominator"],
+      "properties":{
+        "omega_log_K":{"type":"number","minimum":0, "description": "omega_log converted to Kelvin"},
+        "denominator":{"type":"number", "description": "Allen-Dynes denominator λ - μ*(1 + 0.62λ)"}
+      }
+    },
+    "results": {
+      "type":"object",
+      "description": "Final calculation results",
+      "required":["Tc_K"],
+      "properties":{"Tc_K":{"type":"number","minimum":0, "description": "Critical temperature in Kelvin"}}
+    },
+    "status":{"type":"string","enum":["ok","error"], "description": "Calculation status"}
+  }
 }
