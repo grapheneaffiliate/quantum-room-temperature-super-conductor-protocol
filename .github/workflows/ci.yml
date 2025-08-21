@@ -36,7 +36,7 @@ jobs:
         python -c "import json; d=json.load(open('out/demo/rtsc_results.json')); assert 'timestamp' in d and 'tc_estimate_K' in d and 'success_probability' in d"
 
     - name: Upload demo artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: demo-artifacts
         path: out/demo/**
