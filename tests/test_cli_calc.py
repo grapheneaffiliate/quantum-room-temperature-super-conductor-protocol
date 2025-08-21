@@ -67,7 +67,7 @@ def test_cli_calc_error_handling():
     try:
         err = json.loads(proc.stderr)
         assert err["status"] == "error"
-        assert "lambda must be > 0" in err["error"]
+        assert "lambda=-1.0 must be > 0" in err["error"]
     except json.JSONDecodeError:
         pytest.fail(f"Error output is not valid JSON: {proc.stderr}")
 

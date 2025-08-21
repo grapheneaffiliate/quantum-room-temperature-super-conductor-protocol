@@ -19,8 +19,12 @@ def calc_tc(omega_log_value, omega_units, lam, mu_star, f_omega):
         raise ValueError("omega-units must be 'meV' or 'K'")
     
     # Enhanced physics validation guards
-    if not (10 <= omega_log_value <= 1000):
-        raise ValueError(f"omega_log={omega_log_value} out of physical range [10, 1000] {omega_units}")
+    if u in ("mev", "meV", "mev"):
+        if not (10 <= omega_log_value <= 1000):
+            raise ValueError(f"omega_log={omega_log_value} out of physical range [10, 1000] {omega_units}")
+    else:  # Kelvin units
+        if not (100 <= omega_log_value <= 12000):
+            raise ValueError(f"omega_log={omega_log_value} out of physical range [100, 12000] {omega_units}")
     
     if lam <= 0:
         raise ValueError(f"lambda={lam} must be > 0 (electron-phonon coupling strength)")

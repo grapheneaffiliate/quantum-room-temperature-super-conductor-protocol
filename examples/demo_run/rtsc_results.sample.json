@@ -1,13 +1,21 @@
 {
-  "timestamp": "2025-08-20T22:30:00Z",
-  "tc_estimate_K": 339.44,
-  "success_probability": {
-    "rtsc_300K": 0.95
+  "provenance": {
+    "timestamp_utc": "2025-08-20T22:30:00Z",
+    "git_sha": "abc123def456"
   },
   "inputs": {
-    "omega_meV": 145,
-    "lambda_eff": 2.6,
+    "omega_log": 145,
+    "omega_units": "meV",
+    "lambda": 2.6,
     "mu_star": 0.10,
     "f_omega": 1.2
-  }
+  },
+  "derived": {
+    "omega_log_K": 1682.65,
+    "denominator": 1.988
+  },
+  "results": {
+    "Tc_K": 339.44
+  },
+  "status": "ok"
 }

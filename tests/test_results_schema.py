@@ -8,5 +8,8 @@ def test_results_schema():
     assert os.path.exists(demo_file)
     data = json.load(open(demo_file))
     validate(instance=data, schema=SCHEMA)
-    assert isinstance(data['tc_estimate_K'], (int, float))
-    assert isinstance(data['success_probability']['rtsc_300K'], (int, float))
+    # Validate the new schema structure
+    assert 'results' in data
+    assert 'Tc_K' in data['results']
+    assert isinstance(data['results']['Tc_K'], (int, float))
+    assert data['status'] == 'ok'
