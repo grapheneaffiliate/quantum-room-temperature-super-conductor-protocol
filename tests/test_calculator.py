@@ -1,12 +1,4 @@
-import importlib.util, pathlib
-
-# Dynamically import rtsc_calculator from tools
-spec = importlib.util.spec_from_file_location(
-    "rtsc_calculator",
-    str(pathlib.Path(__file__).resolve().parents[1] / "tools" / "rtsc_calculator.py")
-)
-rtsc_calculator = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(rtsc_calculator)
+from quantum_rtsc_protocol.tools import rtsc_calculator
 
 def test_tc_monotonic_lambda():
     # Test with the correct signature: lambda_eff, mu_star, omega_log_mev

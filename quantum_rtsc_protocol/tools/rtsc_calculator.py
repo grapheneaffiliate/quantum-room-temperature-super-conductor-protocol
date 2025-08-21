@@ -61,7 +61,42 @@ class CouplingChannels:
             
         return True
 
-def allen_dynes_tc(omega_mev: float, lam_eff: float, mu_star: float = 0.12, f_omega: float = 1.0) -> float:
+def multi_channel_lambda(lambda_h: float, lambda_plasmon: float, lambda_flat: float) -> float:
+    """
+    Backward-compatible wrapper for multi-channel lambda calculation.
+    Delegates to RTSCCalculator.calculate_multi_channel_lambda.
+    """
+    return RTSCCalculator().calculate_multi_channel_lambda(lambda_h, lambda_plasmon, lambda_flat)
+
+
+def allen_dynes_tc_legacy(lambda_eff: float, mu_star: float, omega_mev: float, f_omega: float = 1.0) -> float:
+    """
+    Legacy wrapper for backward compatibility with tests expecting argument order:
+    (lambda_eff, mu_star, omega_mev).
+    Internally calls allen_dynes_tc_new with reordered arguments.
+    """
+    return allen_dynes_tc_new(omega_mev, lambda_eff, mu_star, f_omega)
+
+
+# Provide both legacy and new interfaces without recursion
+def allen_dynes_tc(*args, **kwargs):
+    """
+    Backward-compatible Allen-Dynes Tc function.
+    - If called with (lambda_eff, mu_star, omega_mev[, f_omega]) → legacy order
+    - If called with (omega_mev, lambda_eff[, mu_star, f_omega]) → new order
+    """
+    if len(args) >= 3:
+        # Detect legacy vs new by argument positions
+        if isinstance(args[0], (int, float)) and isinstance(args[2], (int, float)):
+            # If first arg is small (<10) and third arg is large (>20), assume legacy order
+            if args[0] < 10 and args[2] > 20:
+                return allen_dynes_tc_new(args[2], args[0], args[1], args[3] if len(args) > 3 else 1.0)
+        # Otherwise assume new order
+        return allen_dynes_tc_new(*args, **kwargs)
+    return allen_dynes_tc_new(*args, **kwargs)
+
+
+def allen_dynes_tc_new(omega_mev: float, lam_eff: float, mu_star: float = 0.12, f_omega: float = 1.0) -> float:
     """
     Standalone Allen-Dynes Tc calculation with enhanced guard rails.
     

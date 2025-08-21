@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "quantum-rtsc-protocol"
+name = "quantum_rtsc_protocol"
 version = "0.1.0"
 description = "Open-source protocol for room-temperature superconductivity in hydrogen-intercalated graphene/h-BN heterostructures"
 authors = [
@@ -21,10 +21,5 @@ dependencies = [
 ]
 
 [tool.setuptools.packages.find]
-where = ["."]
-include = ["tools*", "analysis*", "masks*"]
-
-[tool.setuptools.package-dir]
-"quantum_rtsc_protocol.tools" = "tools"
-"quantum_rtsc_protocol.analysis" = "analysis"
-"quantum_rtsc_protocol.masks" = "masks"
+where = ["quantum_rtsc_protocol"]
+include = ["*"]

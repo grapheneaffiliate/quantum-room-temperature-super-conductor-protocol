@@ -1,1 +1,12 @@
-import json, os\nfrom jsonschema import validate\n\nSCHEMA = json.load(open(os.path.join(os.path.dirname(__file__), '../analysis/results_schema.json')))\n\ndef test_results_schema():\n    demo_file = os.path.join(os.path.dirname(__file__), '../examples/demo_run/rtsc_results.json')\n    assert os.path.exists(demo_file)\n    data = json.load(open(demo_file))\n    validate(instance=data, schema=SCHEMA)\n    assert all(isinstance(x, (int,float)) for x in [data['tc_estimate_K'], data['tc_ci_K']['p50']])\n
+import json, os
+from jsonschema import validate
+
+SCHEMA = json.load(open(os.path.join(os.path.dirname(__file__), '../docs/rtsc_results.schema.json')))
+
+def test_results_schema():
+    demo_file = os.path.join(os.path.dirname(__file__), '../examples/demo_run/rtsc_results.sample.json')
+    assert os.path.exists(demo_file)
+    data = json.load(open(demo_file))
+    validate(instance=data, schema=SCHEMA)
+    assert isinstance(data['tc_estimate_K'], (int, float))
+    assert isinstance(data['success_probability']['rtsc_300K'], (int, float))

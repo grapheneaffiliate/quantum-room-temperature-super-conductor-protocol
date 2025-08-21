@@ -1,12 +1,5 @@
-import importlib.util, pathlib, pandas as pd
-
-# Dynamically import validators from analysis
-spec = importlib.util.spec_from_file_location(
-    "validators",
-    str(pathlib.Path(__file__).resolve().parents[1] / "analysis" / "validators.py")
-)
-validators = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(validators)
+import pandas as pd
+from quantum_rtsc_protocol.analysis import validators
 
 def test_transport_demo():
     df = pd.read_csv("examples/sample_data/iv_4probe.csv")
