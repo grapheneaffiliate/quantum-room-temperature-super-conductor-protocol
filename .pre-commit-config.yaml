@@ -1,0 +1,51 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-yaml
+        name: Check YAML syntax
+      - id: check-json
+        name: Check JSON syntax
+      - id: check-merge-conflict
+        name: Check for merge conflicts
+      - id: check-added-large-files
+        name: Check for large files
+      - id: trailing-whitespace
+        name: Trim trailing whitespace
+      - id: end-of-file-fixer
+        name: Fix end of files
+      - id: mixed-line-ending
+        name: Fix mixed line endings
+      - id: check-case-conflict
+        name: Check for case conflicts
+      
+  # Prevent hidden/bidirectional Unicode characters in critical files
+  - repo: https://github.com/sirosen/check-jsonschema
+    rev: 0.23.3
+    hooks:
+      - id: check-jsonschema
+        name: Validate JSON Schema files
+        files: '\.schema\.json$'
+        args: ['--schemafile', 'https://json-schema.org/draft-07/schema']
+        
+  # Custom hook to detect Unicode control characters in YAML/CI files
+  - repo: local
+    hooks:
+      - id: check-unicode-control-chars
+        name: Check for hidden Unicode control characters
+        entry: python
+        language: system
+        files: '\.(ya?ml|json|py|md)$'
+        args: ['-c', 'import sys, re; [sys.exit(1) if re.search(r"[\u200e\u200f\u202a-\u202e\u2066-\u2069]", open(f).read()) else None for f in sys.argv[1:]]']
+        verbose: true
+        
+  # Ensure ASCII-only in CI files
+  - repo: local
+    hooks:
+      - id: ascii-only-ci
+        name: Ensure ASCII-only in CI files
+        entry: python
+        language: system
+        files: '\.github/.*\.(ya?ml|json)$'
+        args: ['-c', 'import sys; [sys.exit(1) if not all(ord(c) < 128 for c in open(f).read()) else None for f in sys.argv[1:]]']
+        verbose: true

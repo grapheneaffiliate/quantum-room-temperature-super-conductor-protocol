@@ -8,7 +8,7 @@ import subprocess
 K_PER_MEV = 11.60451812155008
 
 def calc_tc(omega_log_value, omega_units, lam, mu_star, f_omega):
-    """Calculate Tc using Allen-Dynes formula with input validation."""
+    """Calculate Tc using Allen-Dynes formula with comprehensive input validation."""
     # convert ω_log to Kelvin
     u = omega_units.lower()
     if u in ("mev", "meV", "mev"):
@@ -18,19 +18,38 @@ def calc_tc(omega_log_value, omega_units, lam, mu_star, f_omega):
     else:
         raise ValueError("omega-units must be 'meV' or 'K'")
     
-    # Physics validation guards
+    # Enhanced physics validation guards
+    if not (10 <= omega_log_value <= 1000):
+        raise ValueError(f"omega_log={omega_log_value} out of physical range [10, 1000] {omega_units}")
+    
     if lam <= 0:
-        raise ValueError("lambda must be > 0")
-    if not (0 < mu_star < 0.3):
-        raise ValueError("mu* must be in (0, 0.3)")
+        raise ValueError(f"lambda={lam} must be > 0 (electron-phonon coupling strength)")
+    if lam > 10:
+        raise ValueError(f"lambda={lam} unrealistically large (typical range: 0.1-5.0)")
+    
+    if not (0.01 < mu_star < 0.3):
+        raise ValueError(f"mu*={mu_star} must be in (0.01, 0.3) (Coulomb pseudopotential range)")
+    
+    if not (1.0 <= f_omega <= 1.5):
+        raise ValueError(f"f_omega={f_omega} out of allowed range [1.0, 1.5] (spectral shape factor)")
+    
+    # Critical Allen-Dynes denominator check
     den = lam - mu_star * (1 + 0.62 * lam)
     if den <= 0:
-        raise ValueError("denominator non-positive; pick different (λ, μ*)")
-    if not (1.0 <= f_omega <= 1.5):
-        raise ValueError("f_omega out of allowed range [1.0, 1.5]")
+        critical_mu = lam / (1 + 0.62 * lam)
+        raise ValueError(f"Allen-Dynes denominator={den:.4f} ≤ 0. For λ={lam}, need μ* < {critical_mu:.4f}")
     
-    # Allen-Dynes calculation
-    base = (omega_log_K / 1.2) * math.exp(-1.04 * (1 + lam) / den)
+    # Warn if denominator is very small (unstable regime)
+    if den < 0.1:
+        import warnings
+        warnings.warn(f"Small denominator={den:.4f} may indicate unstable parameter regime", UserWarning)
+    
+    # Allen-Dynes calculation with overflow protection
+    exponent = -1.04 * (1 + lam) / den
+    if exponent < -50:  # Prevent underflow
+        raise ValueError(f"Exponential term too small (exp({exponent:.2f})) - parameters yield negligible Tc")
+    
+    base = (omega_log_K / 1.2) * math.exp(exponent)
     
     # Provenance information
     now = datetime.utcnow().isoformat() + "Z"
