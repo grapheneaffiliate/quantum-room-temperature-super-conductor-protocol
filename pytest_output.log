@@ -1,0 +1,281 @@
+C:\Users\atchi\Desktop\lc_mcp_app\LC_MCP_APP\venv\Lib\site-packages\pytest_asyncio\plugin.py:211: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+.......F...F....F.....FFF..FF.......F........F.                          [100%]
+================================== FAILURES ===================================
+_______________________ test_synthetic_data_generation ________________________
+
+    def test_synthetic_data_generation():
+        calc = RTSCCalculator()
+        params = {'omega_log': 140, 'lambda_eff': 2.7, 'mu_star': 0.10, 'tc': 320}
+        data = calc.generate_synthetic_data(params)
+        assert 'temperature' in data and 'resistance' in data
+        assert len(data['temperature']) == 100
+>       assert data['omega_log_calculated'] > 100
+E       assert 81.27112102507152 > 100
+
+tests\test_calculations.py:57: AssertionError
+________________________________ test_cli_runs ________________________________
+
+    def test_cli_runs():
+        # Test running the calculator directly as a script
+        import pathlib
+        script_path = pathlib.Path(__file__).resolve().parents[1] / "tools" / "rtsc_calculator.py"
+>       subprocess.check_call([sys.executable, str(script_path), "calc", "--omega-log-mev", "135"])
+
+tests\test_cli.py:7: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+popenargs = (['C:\\Users\\atchi\\Desktop\\lc_mcp_app\\LC_MCP_APP\\venv\\Scripts\\python.exe', 'C:\\Users\\atchi\\Desktop\\lc_mcp_app\\quantum-rtsc-protocol\\tools\\rtsc_calculator.py', 'calc', '--omega-log-mev', '135'],)
+kwargs = {}, retcode = 2
+cmd = ['C:\\Users\\atchi\\Desktop\\lc_mcp_app\\LC_MCP_APP\\venv\\Scripts\\python.exe', 'C:\\Users\\atchi\\Desktop\\lc_mcp_app\\quantum-rtsc-protocol\\tools\\rtsc_calculator.py', 'calc', '--omega-log-mev', '135']
+
+    def check_call(*popenargs, **kwargs):
+        """Run command with arguments.  Wait for command to complete.  If
+        the exit code was zero then return, otherwise raise
+        CalledProcessError.  The CalledProcessError object will have the
+        return code in the returncode attribute.
+    
+        The arguments are the same as for the call function.  Example:
+    
+        check_call(["ls", "-l"])
+        """
+        retcode = call(*popenargs, **kwargs)
+        if retcode:
+            cmd = kwargs.get("args")
+            if cmd is None:
+                cmd = popenargs[0]
+>           raise CalledProcessError(retcode, cmd)
+E           subprocess.CalledProcessError: Command '['C:\\Users\\atchi\\Desktop\\lc_mcp_app\\LC_MCP_APP\\venv\\Scripts\\python.exe', 'C:\\Users\\atchi\\Desktop\\lc_mcp_app\\quantum-rtsc-protocol\\tools\\rtsc_calculator.py', 'calc', '--omega-log-mev', '135']' returned non-zero exit status 2.
+
+..\..\..\AppData\Local\Programs\Python\Python311\Lib\subprocess.py:413: CalledProcessError
+---------------------------- Captured stderr call -----------------------------
+C:\Users\atchi\AppData\Local\Programs\Python\Python311\python.exe: can't open file 'C:\\Users\\atchi\\Desktop\\lc_mcp_app\\quantum-rtsc-protocol\\tools\\rtsc_calculator.py': [Errno 2] No such file or directory
+
+_________________ TestGuardRails.test_unphysical_denominator __________________
+
+self = <test_enhanced_calculator.TestGuardRails object at 0x000002267FE2D7D0>
+
+    def test_unphysical_denominator(self):
+        """Test that unphysical denominator raises ValueError."""
+        # Case where \u03bb_eff is too small relative to \u03bc*
+        with pytest.raises(ValueError, match="Unphysical input: denominator \u2264 0"):
+>           allen_dynes_tc(140, 0.5, 0.8)  # \u03bb_eff << \u03bc*
+
+tests\test_enhanced_calculator.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+quantum_rtsc_protocol\tools\rtsc_calculator.py:95: in allen_dynes_tc
+    return allen_dynes_tc_new(*args, **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+omega_mev = 140, lam_eff = 0.5, mu_star = 0.8, f_omega = 1.0
+
+    def allen_dynes_tc_new(omega_mev: float, lam_eff: float, mu_star: float = 0.12, f_omega: float = 1.0) -> float:
+        """
+        Standalone Allen-Dynes Tc calculation with enhanced guard rails.
+    
+        Args:
+            omega_mev: Logarithmic average phonon frequency (meV)
+            lam_eff: Effective electron-phonon coupling
+            mu_star: Coulomb pseudopotential (default 0.12)
+            f_omega: Spectral weight enhancement factor (default 1.0)
+    
+        Returns:
+            Tc: Superconducting transition temperature (K)
+    
+        Raises:
+            ValueError: For unphysical input parameters
+        """
+        # Enhanced guard rails
+        if lam_eff <= 0:
+            raise ValueError("\u03bb_eff must be > 0")
+        if mu_star < 0 or mu_star > 0.3:
+>           raise ValueError("\u03bc* out of range [0, 0.3]")
+E           ValueError: \u03bc* out of range [0, 0.3]
+
+quantum_rtsc_protocol\tools\rtsc_calculator.py:119: ValueError
+
+During handling of the above exception, another exception occurred:
+
+self = <test_enhanced_calculator.TestGuardRails object at 0x000002267FE2D7D0>
+
+    def test_unphysical_denominator(self):
+        """Test that unphysical denominator raises ValueError."""
+        # Case where \u03bb_eff is too small relative to \u03bc*
+>       with pytest.raises(ValueError, match="Unphysical input: denominator \u2264 0"):
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'Unphysical input: denominator \u2264 0'
+E        Input: '\u03bc* out of range [0, 0.3]'
+
+tests\test_enhanced_calculator.py:48: AssertionError
+_________________ TestGoldenCases.test_enhanced_spectral_296k _________________
+
+self = <test_enhanced_calculator.TestGoldenCases object at 0x000002267FE2FE50>
+
+    def test_enhanced_spectral_296k(self):
+        """Test enhanced spectral case."""
+        tc = allen_dynes_tc(145, 2.52, 0.10, 1.2)
+>       assert 290 < tc < 300, f"Expected ~296K, got {tc:.1f}K"
+E       AssertionError: Expected ~296K, got 334.0K
+E       assert 333.95095407922156 < 300
+
+tests\test_enhanced_calculator.py:105: AssertionError
+___________________ TestGoldenCases.test_high_coupling_312k ___________________
+
+self = <test_enhanced_calculator.TestGoldenCases object at 0x000002267FE30550>
+
+    def test_high_coupling_312k(self):
+        """Test high coupling case."""
+        tc = allen_dynes_tc(150, 2.54, 0.12, 1.3)
+>       assert 305 < tc < 320, f"Expected ~312K, got {tc:.1f}K"
+E       AssertionError: Expected ~312K, got 362.1K
+E       assert 362.08790154091685 < 320
+
+tests\test_enhanced_calculator.py:110: AssertionError
+______________________ TestGoldenCases.test_target_300k _______________________
+
+self = <test_enhanced_calculator.TestGoldenCases object at 0x000002267FE30C50>
+
+    def test_target_300k(self):
+        """Test optimized 300K target."""
+        tc = allen_dynes_tc(135, 3.14, 0.12, 1.1)
+>       assert abs(tc - 300.0) < 5.0, f"Expected ~300K, got {tc:.1f}K"
+E       AssertionError: Expected ~300K, got 306.3K
+E       assert 6.257987806544634 < 5.0
+E        +  where 6.257987806544634 = abs((306.25798780654463 - 300.0))
+
+tests\test_enhanced_calculator.py:115: AssertionError
+__________ TestInverseFunctions.test_lambda_for_tc_impossible_target __________
+
+self = <test_enhanced_calculator.TestInverseFunctions object at 0x000002267FE30F10>
+
+    def test_lambda_for_tc_impossible_target(self):
+        """Test that impossible targets raise appropriate errors."""
+>       with pytest.raises(ValueError, match="No solution found"):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests\test_enhanced_calculator.py:145: Failed
+______________ TestCouplingChannels.test_coupling_channels_basic ______________
+
+self = <test_enhanced_calculator.TestCouplingChannels object at 0x000002267FE31350>
+
+    def test_coupling_channels_basic(self):
+        """Test basic CouplingChannels functionality."""
+        channels = CouplingChannels(lam_H=1.8, lam_plasmon=0.5, lam_flat=0.4)
+    
+>       assert channels.lam_eff == 2.7
+E       assert 2.6999999999999997 == 2.7
+E        +  where 2.6999999999999997 = CouplingChannels(lam_H=1.8, lam_plasmon=0.5, lam_flat=0.4).lam_eff
+
+tests\test_enhanced_calculator.py:155: AssertionError
+_______________ TestNumericalStability.test_boundary_conditions _______________
+
+self = <test_enhanced_calculator.TestNumericalStability object at 0x000002267FE33F10>
+
+    def test_boundary_conditions(self):
+        """Test behavior at physical boundaries."""
+        # \u03bb_eff just above \u03bc*
+>       tc_boundary = allen_dynes_tc(140, 0.121, 0.12)
+
+tests\test_enhanced_calculator.py:249: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+quantum_rtsc_protocol\tools\rtsc_calculator.py:95: in allen_dynes_tc
+    return allen_dynes_tc_new(*args, **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+omega_mev = 140, lam_eff = 0.121, mu_star = 0.12, f_omega = 1.0
+
+    def allen_dynes_tc_new(omega_mev: float, lam_eff: float, mu_star: float = 0.12, f_omega: float = 1.0) -> float:
+        """
+        Standalone Allen-Dynes Tc calculation with enhanced guard rails.
+    
+        Args:
+            omega_mev: Logarithmic average phonon frequency (meV)
+            lam_eff: Effective electron-phonon coupling
+            mu_star: Coulomb pseudopotential (default 0.12)
+            f_omega: Spectral weight enhancement factor (default 1.0)
+    
+        Returns:
+            Tc: Superconducting transition temperature (K)
+    
+        Raises:
+            ValueError: For unphysical input parameters
+        """
+        # Enhanced guard rails
+        if lam_eff <= 0:
+            raise ValueError("\u03bb_eff must be > 0")
+        if mu_star < 0 or mu_star > 0.3:
+            raise ValueError("\u03bc* out of range [0, 0.3]")
+        if omega_mev <= 0:
+            raise ValueError("\u03c9_log must be > 0")
+        if f_omega <= 0:
+            raise ValueError("f_\u03c9 must be > 0")
+    
+        # Check denominator for physical validity
+        den = lam_eff - mu_star * (1 + 0.62 * lam_eff)
+        if den <= 0:
+>           raise ValueError("Unphysical input: denominator \u2264 0 (\u03bb_eff too small or \u03bc* too large)")
+E           ValueError: Unphysical input: denominator \u2264 0 (\u03bb_eff too small or \u03bc* too large)
+
+quantum_rtsc_protocol\tools\rtsc_calculator.py:128: ValueError
+______________________________ test_suscept_demo ______________________________
+
+    def test_suscept_demo():
+        df = pd.read_csv("examples/sample_data/ac_susceptibility.csv")
+        res = validators.evaluate_susceptibility(df)
+>       assert res.passed
+E       assert False
+E        +  where False = <quantum_rtsc_protocol.analysis.validators.SusceptibilityResult object at 0x0000022611B52390>.passed
+
+tests\test_validators.py:12: AssertionError
+=================================== PASSES ====================================
+=========================== short test summary info ===========================
+PASSED tests/test_calculations.py::test_tc_calculation_basic
+PASSED tests/test_calculations.py::test_gap_calculation
+PASSED tests/test_calculations.py::test_multi_channel_lambda
+PASSED tests/test_calculations.py::test_omega_log_calculation
+PASSED tests/test_calculations.py::test_f_omega_calculation
+PASSED tests/test_calculations.py::test_validation_pass
+PASSED tests/test_calculations.py::test_validation_fail
+PASSED tests/test_calculations.py::test_parameter_optimization
+PASSED tests/test_calculations.py::test_sensitivity_analysis
+PASSED tests/test_calculator.py::test_tc_monotonic_lambda
+PASSED tests/test_enhanced_calculator.py::TestGuardRails::test_negative_lambda_eff
+PASSED tests/test_enhanced_calculator.py::TestGuardRails::test_mu_star_out_of_range
+PASSED tests/test_enhanced_calculator.py::TestGuardRails::test_negative_omega
+PASSED tests/test_enhanced_calculator.py::TestGuardRails::test_negative_f_omega
+PASSED tests/test_enhanced_calculator.py::TestMonotonicity::test_tc_increases_with_lambda
+PASSED tests/test_enhanced_calculator.py::TestMonotonicity::test_tc_increases_with_omega
+PASSED tests/test_enhanced_calculator.py::TestMonotonicity::test_tc_decreases_with_mu_star
+PASSED tests/test_enhanced_calculator.py::TestMonotonicity::test_tc_increases_with_f_omega
+PASSED tests/test_enhanced_calculator.py::TestGoldenCases::test_baseline_278k
+PASSED tests/test_enhanced_calculator.py::TestInverseFunctions::test_lambda_for_tc_basic
+PASSED tests/test_enhanced_calculator.py::TestInverseFunctions::test_lambda_for_tc_with_f_omega
+PASSED tests/test_enhanced_calculator.py::TestCouplingChannels::test_negative_channels
+PASSED tests/test_enhanced_calculator.py::TestCouplingChannels::test_channel_warnings
+PASSED tests/test_enhanced_calculator.py::TestRTSCCalculatorEnhanced::test_calculate_tc_consistency
+PASSED tests/test_enhanced_calculator.py::TestRTSCCalculatorEnhanced::test_gap_calculation_strong_coupling
+PASSED tests/test_enhanced_calculator.py::TestRTSCCalculatorEnhanced::test_parameter_validation_rtsc_criteria
+PASSED tests/test_enhanced_calculator.py::TestNumericalStability::test_extreme_parameters
+PASSED tests/test_enhanced_calculator.py::TestNumericalStability::test_lambda_for_tc_convergence
+PASSED tests/test_enhanced_calculator.py::TestCLIInterface::test_cli_imports
+PASSED tests/test_enhanced_calculator.py::TestCLIInterface::test_standalone_functions_available
+PASSED tests/test_regression.py::test_tc_golden_values
+PASSED tests/test_regression.py::test_lambda_inverse
+PASSED tests/test_regression.py::test_monotonicity
+PASSED tests/test_regression.py::test_denominator_guard
+PASSED tests/test_results_schema.py::test_results_schema
+PASSED tests/test_validators.py::test_transport_demo
+PASSED tests/test_validators.py::test_raman_demo
+FAILED tests/test_calculations.py::test_synthetic_data_generation - assert 81...
+FAILED tests/test_cli.py::test_cli_runs - subprocess.CalledProcessError: Comm...
+FAILED tests/test_enhanced_calculator.py::TestGuardRails::test_unphysical_denominator
+FAILED tests/test_enhanced_calculator.py::TestGoldenCases::test_enhanced_spectral_296k
+FAILED tests/test_enhanced_calculator.py::TestGoldenCases::test_high_coupling_312k
+FAILED tests/test_enhanced_calculator.py::TestGoldenCases::test_target_300k
+FAILED tests/test_enhanced_calculator.py::TestInverseFunctions::test_lambda_for_tc_impossible_target
+FAILED tests/test_enhanced_calculator.py::TestCouplingChannels::test_coupling_channels_basic
+FAILED tests/test_enhanced_calculator.py::TestNumericalStability::test_boundary_conditions
+FAILED tests/test_validators.py::test_suscept_demo - assert False
+10 failed, 37 passed, 1 warning in 2.58s

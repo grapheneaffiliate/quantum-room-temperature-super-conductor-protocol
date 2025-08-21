@@ -3,6 +3,7 @@ scipy
 pandas
 matplotlib
 seaborn
+jsonschema
 gdspy
 typer
 rich
