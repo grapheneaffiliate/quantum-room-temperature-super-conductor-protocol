@@ -1,4 +1,4 @@
-# 🧪 Quantum RTSC Protocol
+# 🧪 Quantum Room Temperature Superconductor Protocol via Multi-Channel Allen–Dynes Equation
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
@@ -17,6 +17,7 @@ A comprehensive, reproducible **Room-Temperature Superconductivity (RTSC) Protoc
 - **λ_eff ≈ 2.5–2.7**
 - **μ* ≤ 0.12**
 - **f_ω ≥ 1.35**
+If ω_log ≥ 150 meV, μ* ≤ 0.12, and λ_eff ≥ 3.0 (no double-counting), then by Allen–Dynes T_c ≥ 300 K
 
 This repository provides all necessary documentation, analysis tools, LaTeX templates, and lab travelers to attempt reproducible fabrication and verification of superconductivity at ~300 K under ambient pressure.
 
