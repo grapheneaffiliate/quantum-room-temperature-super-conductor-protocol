@@ -650,12 +650,13 @@ def main():
         
         if not os.path.exists(synthetic_file):
             # Create synthetic alpha2f data
-            frequencies = np.linspace(10, 200, 100)
-            # Create a realistic-looking spectrum with peaks
+            frequencies = np.linspace(10, 200, 200)
+            # Create a more realistic spectrum with multiple peaks
             alpha2f = (
-                0.5 * np.exp(-((frequencies - 50) / 20) ** 2) +  # Low freq peak
-                0.8 * np.exp(-((frequencies - 100) / 15) ** 2) +  # Mid freq peak  
-                1.2 * np.exp(-((frequencies - 150) / 25) ** 2)    # High freq peak
+                0.8 * np.exp(-((frequencies - 40) / 15) ** 2) +   # Phonon peak
+                1.5 * np.exp(-((frequencies - 90) / 25) ** 2) +   # Plasmon/other mode
+                2.5 * np.exp(-((frequencies - 160) / 30) ** 2) +  # Hydrogen vibron
+                np.random.rand(len(frequencies)) * 0.1 # Add some noise
             )
             
             df = pd.DataFrame({
