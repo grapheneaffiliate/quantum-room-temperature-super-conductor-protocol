@@ -7,8 +7,6 @@
 
 **Open-source protocol for room-temperature superconductivity in hydrogen-intercalated graphene/h-BN heterostructures**
 
-If ω_log ≥ 150 meV, μ* ≤ 0.12, and λ_eff ≥ 3.0 (no double-counting), then by Allen–Dynes T_c ≥ 300 K
-
 🎯 **Goal**: Achieve Tc ≥ 300K using conventional Eliashberg physics  
 📊 **Status**: Protocol v1.0 - Ready for experimental validation  
 🔬 **Method**: Trap-and-clamp hydrogen stabilization with systematic validation
@@ -19,6 +17,7 @@ A comprehensive, reproducible **Room-Temperature Superconductivity (RTSC) Protoc
 - **λ_eff ≈ 2.5–2.7**
 - **μ* ≤ 0.12**
 - **f_ω ≥ 1.35**
+If ω_log ≥ 150 meV, μ* ≤ 0.12, and λ_eff ≥ 3.0 (no double-counting), then by Allen–Dynes T_c ≥ 300 K
 
 This repository provides all necessary documentation, analysis tools, LaTeX templates, and lab travelers to attempt reproducible fabrication and verification of superconductivity at ~300 K under ambient pressure.
 
