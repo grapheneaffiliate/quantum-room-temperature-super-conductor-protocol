@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RTSC Results Schema",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "tc_estimate_K": {
+      "type": "number",
+      "description": "Estimated superconducting transition temperature in Kelvin"
+    },
+    "success_probability": {
+      "type": "object",
+      "properties": {
+        "rtsc_300K": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Probability that Tc ≥ 300 K"
+        }
+      },
+      "required": ["rtsc_300K"]
+    },
+    "inputs": {
+      "type": "object",
+      "properties": {
+        "omega_meV": { "type": "number" },
+        "lambda_eff": { "type": "number" },
+        "mu_star": { "type": "number" },
+        "f_omega": { "type": "number" }
+      },
+      "required": ["omega_meV", "lambda_eff", "mu_star", "f_omega"]
+    }
+  },
+  "required": ["timestamp", "tc_estimate_K", "success_probability", "inputs"]
+}

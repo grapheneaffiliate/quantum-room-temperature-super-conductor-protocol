@@ -1,0 +1,13 @@
+{
+  "timestamp": "2025-08-20T22:30:00Z",
+  "tc_estimate_K": 339.44,
+  "success_probability": {
+    "rtsc_300K": 0.95
+  },
+  "inputs": {
+    "omega_meV": 145,
+    "lambda_eff": 2.6,
+    "mu_star": 0.10,
+    "f_omega": 1.2
+  }
+}

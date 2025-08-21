@@ -1,24 +1,10 @@
 cff-version: 1.2.0
-title: "Quantum RTSC Protocol: Room-Temperature Superconductivity via Hydrogen-Intercalated 2D Materials"
-message: "If you use this protocol, please cite it as below."
-type: software
-authors:
-  - name: "RTSC Protocol Team"
-    affiliation: "Quantum Materials Research Consortium"
-repository-code: "https://github.com/grapheneaffiliate/quantum-rtsc-protocol"
-url: "https://github.com/grapheneaffiliate/quantum-rtsc-protocol"
-date-released: 2025-08-20
+title: quantum-rtsc-protocol
 version: 1.0.0
-license: MIT
-keywords:
-  - superconductivity
-  - room-temperature
-  - graphene
-  - materials-science
-  - condensed-matter-physics
-  - quantum-materials
-  - open-science
-  - eliashberg-theory
-  - allen-dynes
-  - hydrogen-intercalation
-abstract: "A comprehensive, reproducible protocol for testing room-temperature superconductivity in hydrogen-intercalated graphene/h-BN heterostructures using Allen-Dynes multi-channel coupling theory. Includes complete fabrication procedures, measurement protocols, analysis tools, and artifact rejection criteria."
+message: Cite this software.
+authors:
+  - name: 'Timothy McGirl'
+doi: 10.5281/zenodo.XXXXXXX
+date-released: 2025-08-20
+url: https://github.com/grapheneaffiliate/quantum-rtsc-protocol
+
