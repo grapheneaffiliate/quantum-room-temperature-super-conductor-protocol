@@ -70,11 +70,17 @@ Stop/go gates embedded after steps 1, 3, 5, 6, 7, 10.
 ## 4) Detailed SOP & recipes
 
 ### Step 1 — Substrate prep (10×10 mm chips)
+*   **Reproducibility and Cleanup:** Emphasize cleanroom assembly protocols. Ensure all tools and consumables are certified for cleanroom use.
 *   Cleave wafer; ultrasonic acetone 5 min → IPA 2 min → N₂ dry.
 *   Piranha 3:1 H₂SO₄:H₂O₂, 10 min @ 110–120 °C → copious DI rinse → N₂ dry.
 *   Hotplate 150 °C, 5 min (desorb moisture).
 *   (Optional) O₂ UV-ozone 5 min for organics; do not O₂-plasma the graphene later.
 *   QC-1: Contact angle < 15° (hydrophilic SiO₂); optical: no particles > 1 µm.
+
+### Step 2 — (Optional) Strain-tuning ridges (pre-pattern)
+*   Goal: ~0.5–1.5% uniaxial strain after transfer.
+### Step 2 — (Optional) Strain-tuning ridges (pre-pattern)
+*   Goal: ~0.5–1.5% uniaxial strain after transfer.
 
 ### Step 2 — (Optional) Strain-tuning ridges (pre-pattern)
 *   Goal: ~0.5–1.5% uniaxial strain after transfer.
@@ -96,6 +102,8 @@ Stop/go gates embedded after steps 1, 3, 5, 6, 7, 10.
 
 #### 3B) TBG tear-and-stack (Variant B)
 *   PPC/PDMS stamp picks up half-flake at RT, rotate 1.15 ± 0.05°, pick second half.
+*   **Twist Angle Precision:** Utilize SHG microscopy or a piezo-controlled micro-rotator for real-time twist-angle monitoring, aiming for ±0.02° precision. Fine-tune angle after initial stacking if necessary.
+*   **Reproducibility and Cleanup:** Before stacking, perform a high-temperature annealing step (e.g., 150-200 °C in vacuum or forming gas) to minimize defects and ensure a clean, stable stack.
 *   Release on chip at 90–110 °C.
 *   PPC removal: chloroform 20 min → IPA → N₂ → 120 °C 10 min bake.
 *   QC-3B: Moiré check by STM/FFT or dark-field TEM if available; else Raman 2D anisotropy mapping. Accept if twist 1.10–1.20° and wrinkle-free over ≥10 µm span.
@@ -115,6 +123,7 @@ Stop/go gates embedded after steps 1, 3, 5, 6, 7, 10.
 
 ### Step 6 — Hydrogenation (low-damage, two-sided effective)
 *   Rationale: Achieve sub-monolayer C–H incorporation (few % of C sites) to add high-ω modes while preserving conductivity. Use pulsed, low-power H₂ plasma with immediate post-cap.
+*   **Hydrogen Stability Enhancements:** Consider adding a CaHₓ or PdHₓ nanolayer (1-3 nm) as a hydride reservoir, either as a pre-hydrogenation layer or integrated within the encapsulation stack, to enable "recharging" of hydrogen.
 *   Tool: downstream RIE or ICP with remote plasma, sample grounded.
 *   Chamber base ≤5×10⁻⁶ Torr.
 *   Recipe H-1 (gentle): H₂ 50 sccm, 20 mTorr, 10 W RF, stage 25 °C. 10× pulses 20 s ON / 40 s OFF (total ON = 200 s).
@@ -125,7 +134,7 @@ Stop/go gates embedded after steps 1, 3, 5, 6, 7, 10.
 *   Abort if: D/G > 0.5 or G peak severely broadened (amorphization).
 
 ### Step 7 — Final encapsulation (“clamp”)
-*   Main ALD cap: Thermal ALD Al₂O₃ to total 10–15 nm (i.e., add 5–10 nm above pre-cap) at 100–120 °C.
+*   Main ALD cap: Thermal ALD Al₂O₃ to total 10–15 nm (i.e., add 5–10 nm above pre-cap) at 100–120 °C. **Ensure this ALD Al₂O₃ layer is dense and pinhole-free to effectively trap and clamp hydrogen.**
 *   Optional Pd micro-reservoir ring (edge-fed): Lithography: define a 1–2 µm-wide ring around channel, ≥1 µm away from active graphene (on cap). E-beam evap Pd 1–3 nm @ ≤0.2 Å/s; lift-off. Purpose: Pd absorbs H and buffers local chemical potential; do not place Pd directly on channel.
 *   Outer moisture barrier (optional): PEALD SiNₓ 5–10 nm @ ≤120 °C (low-power plasma).
 *   Top-gate (optional): Define gate over channel (separated by Al₂O₃/h-BN dielectric); Au 30–50 nm.
@@ -184,6 +193,9 @@ These quick-look proxies plus transport give a go/no-go to proceed to deep chara
 ### Specific heat (PPMS heat-cap option, optional but decisive)
 *   Micro-calorimetry on chip arrays; look for heat-capacity jump Δ𝐶 at 𝑇_𝑐.
 
+### Integrated Measurement Points (IETS)
+*   **On-chip IETS Junction:** Integrate an Inelastic Electron Tunneling Spectroscopy (IETS) junction directly into the device structure (e.g., by defining a small tunnel barrier during contact patterning). This allows for direct, consistent measurements of α²F(ω) and confirmation of λ_eff without device reassembly.
+
 ### Concordance rule
 Claim only if transport + Meissner (+/- spectroscopy) co-align within ±3 K and field/current dependencies are consistent with superconductivity.
 
@@ -196,6 +208,9 @@ Run N ≥ 12 chips across a matrix:
 *   Gate bias: Back-gate sweep −60…+60 V; optional top-gate ±5 V.
 
 Track: Raman (D/G, CH), sheet R, R(T), leakage, onset features. Use SPC charts; promote only statistically significant wins.
+
+### Pressure and Environment Control
+*   **Piston-Cylinder Cell:** For critical steps involving pressure, utilize a piston-cylinder cell with a controllable pressure ramp. This allows for gradual pressure increase and real-time monitoring of device stability, optimizing conditions beyond a single setpoint.
 
 ## 9) Common failure modes & fixes
 
