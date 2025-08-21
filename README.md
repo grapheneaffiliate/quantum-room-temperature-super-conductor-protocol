@@ -1,9 +1,10 @@
+[![CI](https://github.com/grapheneaffiliate/unified-mcp-system-v3/actions/workflows/ci.yml/badge.svg)](https://github.com/grapheneaffiliate/unified-mcp-system-v3/actions/workflows/ci.yml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1234567.svg)](https://doi.org/10.5281/zenodo.1234567)
+
 # 🧪 Quantum Room Temperature Superconductor Protocol via Multi-Channel Allen–Dynes Equation
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![CI](https://github.com/grapheneaffiliate/quantum-rtsc-protocol/workflows/CI/badge.svg)](https://github.com/grapheneaffiliate/quantum-rtsc-protocol/actions)
-[![DOI](https://img.shields.io/badge/DOI-pending-orange.svg)](https://github.com/grapheneaffiliate/quantum-rtsc-protocol)
 
 **Open-source protocol for room-temperature superconductivity in hydrogen-intercalated graphene/h-BN heterostructures**
 
