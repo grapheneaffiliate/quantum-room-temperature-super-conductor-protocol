@@ -24,5 +24,5 @@ dependencies = [
 rtsc = "quantum_rtsc_protocol.cli:main"
 
 [tool.setuptools.packages.find]
-where = ["quantum_rtsc_protocol"]
-include = ["*"]
+where = ["."]
+include = ["quantum_rtsc_protocol*"]
