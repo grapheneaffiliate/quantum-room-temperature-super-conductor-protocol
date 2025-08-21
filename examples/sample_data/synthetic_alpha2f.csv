@@ -1,0 +1,50 @@
+# Synthetic α²F(ω) spectrum for RTSC protocol testing
+# This represents an idealized hydrogenated graphene spectrum with:
+# - Strong hydrogen vibron peak at ~150 meV
+# - Moderate plasmon contribution at ~80 meV  
+# - Weak low-frequency acoustic modes
+# - High f_ω ratio for spectral weight enhancement
+#
+# Generated parameters:
+# ω_log ≈ 142 meV, λ_total ≈ 2.6, f_ω ≈ 1.4
+#
+frequency_meV,alpha2f,mode_assignment
+10.0,0.0234,acoustic
+15.0,0.0198,acoustic
+20.0,0.0167,acoustic
+25.0,0.0141,acoustic
+30.0,0.0119,acoustic
+35.0,0.0101,acoustic
+40.0,0.0085,acoustic
+45.0,0.0072,acoustic
+50.0,0.0061,acoustic
+55.0,0.0051,acoustic
+60.0,0.0043,acoustic
+65.0,0.0037,acoustic
+70.0,0.0031,acoustic
+75.0,0.0156,plasmon_onset
+80.0,0.0298,plasmon_peak
+85.0,0.0156,plasmon_tail
+90.0,0.0082,plasmon_tail
+95.0,0.0043,plasmon_tail
+100.0,0.0023,transition
+105.0,0.0012,transition
+110.0,0.0006,transition
+115.0,0.0003,transition
+120.0,0.0002,transition
+125.0,0.0001,transition
+130.0,0.0001,transition
+135.0,0.0003,h_vibron_onset
+140.0,0.0012,h_vibron_onset
+145.0,0.0045,h_vibron_rising
+150.0,0.0823,h_vibron_peak
+155.0,0.0045,h_vibron_falling
+160.0,0.0012,h_vibron_tail
+165.0,0.0003,h_vibron_tail
+170.0,0.0001,h_vibron_tail
+175.0,0.0000,cutoff
+180.0,0.0000,cutoff
+185.0,0.0000,cutoff
+190.0,0.0000,cutoff
+195.0,0.0000,cutoff
+200.0,0.0000,cutoff

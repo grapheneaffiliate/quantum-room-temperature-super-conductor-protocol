@@ -30,6 +30,125 @@ import scipy.constants as const
 from scipy.optimize import minimize_scalar
 from typing import Dict, List, Tuple, Optional
 import warnings
+from dataclasses import dataclass
+import typer
+
+@dataclass
+class CouplingChannels:
+    """Data class for multi-channel coupling parameters."""
+    lam_H: float
+    lam_plasmon: float
+    lam_flat: float
+    
+    @property
+    def lam_eff(self) -> float:
+        """Total effective coupling."""
+        return self.lam_H + self.lam_plasmon + self.lam_flat
+    
+    def validate_channels(self) -> bool:
+        """Validate that channels don't overlap spectrally."""
+        # Basic validation - all channels should be positive
+        if any(lam < 0 for lam in [self.lam_H, self.lam_plasmon, self.lam_flat]):
+            raise ValueError("All coupling channels must be positive")
+        
+        # Check for reasonable ranges to prevent double counting
+        if self.lam_H > 3.0:
+            warnings.warn("λ_H > 3.0: Check for spectral overlap with other channels")
+        if self.lam_plasmon > 1.0:
+            warnings.warn("λ_plasmon > 1.0: Check for overlap with phonon spectrum")
+        if self.lam_flat > 1.0:
+            warnings.warn("λ_flat > 1.0: Check for realistic flat band DOS")
+            
+        return True
+
+def allen_dynes_tc(omega_mev: float, lam_eff: float, mu_star: float = 0.12, f_omega: float = 1.0) -> float:
+    """
+    Standalone Allen-Dynes Tc calculation with enhanced guard rails.
+    
+    Args:
+        omega_mev: Logarithmic average phonon frequency (meV)
+        lam_eff: Effective electron-phonon coupling
+        mu_star: Coulomb pseudopotential (default 0.12)
+        f_omega: Spectral weight enhancement factor (default 1.0)
+        
+    Returns:
+        Tc: Superconducting transition temperature (K)
+        
+    Raises:
+        ValueError: For unphysical input parameters
+    """
+    # Enhanced guard rails
+    if lam_eff <= 0:
+        raise ValueError("λ_eff must be > 0")
+    if mu_star < 0 or mu_star > 0.3:
+        raise ValueError("μ* out of range [0, 0.3]")
+    if omega_mev <= 0:
+        raise ValueError("ω_log must be > 0")
+    if f_omega <= 0:
+        raise ValueError("f_ω must be > 0")
+    
+    # Check denominator for physical validity
+    den = lam_eff - mu_star * (1 + 0.62 * lam_eff)
+    if den <= 0:
+        raise ValueError("Unphysical input: denominator ≤ 0 (λ_eff too small or μ* too large)")
+    
+    # Convert meV to K
+    omega_k = 11.6045 * omega_mev
+    
+    # Allen-Dynes formula with f_ω enhancement
+    prefactor = (omega_k / 1.2) * f_omega
+    exponent = -1.04 * (1 + lam_eff) / den
+    
+    tc = prefactor * np.exp(exponent)
+    return tc
+
+def lambda_for_tc(tc_target: float, omega_mev: float, mu_star: float = 0.12, f_omega: float = 1.0) -> float:
+    """
+    Calculate λ_eff needed for a target Tc using bisection method.
+    
+    Args:
+        tc_target: Target transition temperature (K)
+        omega_mev: Logarithmic average frequency (meV)
+        mu_star: Coulomb pseudopotential (default 0.12)
+        f_omega: Spectral weight enhancement factor (default 1.0)
+        
+    Returns:
+        lambda_eff: Required effective coupling
+        
+    Raises:
+        ValueError: If no solution exists in reasonable range
+    """
+    from scipy.optimize import brentq
+    
+    def tc_residual(lam_eff):
+        try:
+            tc_calc = allen_dynes_tc(omega_mev, lam_eff, mu_star, f_omega)
+            return tc_calc - tc_target
+        except ValueError:
+            return -tc_target  # Return large negative if unphysical
+    
+    # Check if solution exists in reasonable range
+    lam_min, lam_max = 0.5, 5.0
+    
+    try:
+        # Check bounds
+        res_min = tc_residual(lam_min)
+        res_max = tc_residual(lam_max)
+        
+        if res_min * res_max > 0:
+            # No sign change - check which bound is closer
+            if abs(res_max) < abs(res_min):
+                warnings.warn(f"Solution may need λ_eff > {lam_max}")
+                return lam_max
+            else:
+                raise ValueError(f"No solution found: target Tc={tc_target}K too low for given parameters")
+        
+        # Use bisection to find solution
+        lambda_solution = brentq(tc_residual, lam_min, lam_max, xtol=1e-6, maxiter=80)
+        return lambda_solution
+        
+    except ValueError as e:
+        raise ValueError(f"Failed to find λ_eff for Tc={tc_target}K: {str(e)}")
 
 class RTSCCalculator:
     """Enhanced calculator for RTSC protocol parameters."""
@@ -527,5 +646,64 @@ def demo_calculations():
         if 'sensitivity' in key:
             print(f"  {key}: {value:.3f}")
 
-if __name__ == "__main__":
+# CLI Interface using Typer
+app = typer.Typer(help="RTSC Calculator CLI")
+
+@app.command()
+def calculate(
+    omega: float = typer.Option(140.0, "--omega", help="ω_log in meV"),
+    lambda_eff: float = typer.Option(2.7, "--lambda", help="λ_eff coupling strength"),
+    mu_star: float = typer.Option(0.10, "--mu", help="μ* Coulomb pseudopotential"),
+    f_omega: float = typer.Option(1.0, "--fomega", help="f_ω spectral enhancement factor")
+):
+    """Calculate Tc using Allen-Dynes formula."""
+    try:
+        tc = allen_dynes_tc(omega, lambda_eff, mu_star, f_omega)
+        gap = RTSCCalculator().calculate_gap(tc, lambda_eff)
+        
+        print(f"Input: ω_log={omega} meV, λ_eff={lambda_eff}, μ*={mu_star}, f_ω={f_omega}")
+        print(f"Result: Tc = {tc:.1f} K, Δ(0) = {gap:.1f} meV")
+        print(f"2Δ/kBTc = {2*gap/(0.0862*tc):.2f}")
+        
+        # Validation
+        calc = RTSCCalculator()
+        validation = calc.validate_rtsc_parameters(omega, lambda_eff, mu_star, f_omega)
+        if validation['overall_pass']:
+            print("✅ RTSC criteria: PASS")
+        else:
+            print("❌ RTSC criteria: FAIL")
+            for key, value in validation.items():
+                if not value and key != 'overall_pass':
+                    print(f"  - {key}: FAIL")
+                    
+    except ValueError as e:
+        print(f"Error: {e}")
+        raise typer.Exit(1)
+
+@app.command()
+def inverse(
+    target_tc: float = typer.Option(300.0, "--tc", help="Target Tc in K"),
+    omega: float = typer.Option(140.0, "--omega", help="ω_log in meV"),
+    mu_star: float = typer.Option(0.10, "--mu", help="μ* Coulomb pseudopotential"),
+    f_omega: float = typer.Option(1.0, "--fomega", help="f_ω spectral enhancement factor")
+):
+    """Calculate λ_eff needed for target Tc."""
+    try:
+        lambda_needed = lambda_for_tc(target_tc, omega, mu_star, f_omega)
+        tc_check = allen_dynes_tc(omega, lambda_needed, mu_star, f_omega)
+        
+        print(f"Target: Tc = {target_tc} K")
+        print(f"Required: λ_eff = {lambda_needed:.3f}")
+        print(f"Verification: Tc = {tc_check:.1f} K")
+        
+    except ValueError as e:
+        print(f"Error: {e}")
+        raise typer.Exit(1)
+
+@app.command()
+def demo():
+    """Run demonstration calculations."""
     demo_calculations()
+
+if __name__ == "__main__":
+    app()
