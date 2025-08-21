@@ -24,7 +24,16 @@ def test_cli_physics_validation_ranges():
     assert "out of physical range [10, 1000]" in err["error"]
     
     # Test omega_log out of range (too large)
-    cmd[4] = "2000"  # Too large
+    cmd = [
+        sys.executable,
+        "-m",
+        "quantum_rtsc_protocol.cli",
+        "calc",
+        "--omega-log", "2000",  # Too large
+        "--lambda-val", "2.5",
+        "--mu-star", "0.12",
+        "--f-omega", "1.35",
+    ]
     proc = subprocess.run(cmd, capture_output=True, text=True)
     assert proc.returncode == 2
     err = json.loads(proc.stderr)
@@ -47,23 +56,48 @@ def test_cli_physics_validation_ranges():
     assert "unrealistically large" in err["error"]
     
     # Test mu* too small
-    cmd[8] = "0.005"  # Too small
-    cmd[6] = "2.5"    # Reset lambda
+    cmd = [
+        sys.executable,
+        "-m",
+        "quantum_rtsc_protocol.cli",
+        "calc",
+        "--omega-log", "120",
+        "--lambda-val", "2.5",
+        "--mu-star", "0.005",  # Too small
+        "--f-omega", "1.35",
+    ]
     proc = subprocess.run(cmd, capture_output=True, text=True)
     assert proc.returncode == 2
     err = json.loads(proc.stderr)
     assert "must be in (0.01, 0.3)" in err["error"]
     
     # Test mu* too large
-    cmd[8] = "0.35"   # Too large
+    cmd = [
+        sys.executable,
+        "-m",
+        "quantum_rtsc_protocol.cli",
+        "calc",
+        "--omega-log", "120",
+        "--lambda-val", "2.5",
+        "--mu-star", "0.35",   # Too large
+        "--f-omega", "1.35",
+    ]
     proc = subprocess.run(cmd, capture_output=True, text=True)
     assert proc.returncode == 2
     err = json.loads(proc.stderr)
     assert "must be in (0.01, 0.3)" in err["error"]
     
     # Test f_omega out of range
-    cmd[8] = "0.12"   # Reset mu*
-    cmd[10] = "0.8"   # Too small
+    cmd = [
+        sys.executable,
+        "-m",
+        "quantum_rtsc_protocol.cli",
+        "calc",
+        "--omega-log", "120",
+        "--lambda-val", "2.5",
+        "--mu-star", "0.12",
+        "--f-omega", "0.8",   # Too small
+    ]
     proc = subprocess.run(cmd, capture_output=True, text=True)
     assert proc.returncode == 2
     err = json.loads(proc.stderr)
@@ -73,6 +107,8 @@ def test_cli_denominator_validation():
     """Test Allen-Dynes denominator validation with critical parameter combinations."""
     
     # Test parameters that make denominator negative
+    # For λ=2.0, critical μ* = 2.0/(1+0.62*2.0) = 2.0/2.24 ≈ 0.893
+    # So μ*=0.9 should make denominator negative
     cmd = [
         sys.executable,
         "-m",
@@ -80,7 +116,7 @@ def test_cli_denominator_validation():
         "calc",
         "--omega-log", "120",
         "--lambda-val", "2.0",
-        "--mu-star", "0.25",  # Too large for this lambda
+        "--mu-star", "0.9",  # This should make denominator negative
         "--f-omega", "1.35",
     ]
     proc = subprocess.run(cmd, capture_output=True, text=True)
@@ -97,8 +133,8 @@ def test_cli_denominator_validation():
         "quantum_rtsc_protocol.cli",
         "calc",
         "--omega-log", "120",
-        "--lambda-val", "3.0",
-        "--mu-star", "0.18",  # Makes small but positive denominator
+        "--lambda-val", "5.0",
+        "--mu-star", "0.29",  # Makes small but positive denominator
         "--f-omega", "1.35",
     ]
     proc = subprocess.run(cmd, capture_output=True, text=True)
@@ -113,6 +149,7 @@ def test_cli_exponential_underflow_protection():
     """Test protection against exponential underflow in Allen-Dynes formula."""
     
     # Test parameters that would cause exponential underflow
+    # Need to use mu* > 0.01 to pass the range check first
     cmd = [
         sys.executable,
         "-m",
@@ -120,7 +157,7 @@ def test_cli_exponential_underflow_protection():
         "calc",
         "--omega-log", "120",
         "--lambda-val", "10.0",  # Very large lambda
-        "--mu-star", "0.01",     # Very small mu* 
+        "--mu-star", "0.02",     # Small but valid mu* 
         "--f-omega", "1.35",
     ]
     proc = subprocess.run(cmd, capture_output=True, text=True)
@@ -150,8 +187,16 @@ def test_cli_enhanced_error_messages():
     assert "electron-phonon coupling strength" in err["error"]
     
     # Test mu* validation with context
-    cmd[6] = "2.5"    # Reset lambda
-    cmd[8] = "0.4"    # Invalid mu*
+    cmd = [
+        sys.executable,
+        "-m",
+        "quantum_rtsc_protocol.cli",
+        "calc",
+        "--omega-log", "120",
+        "--lambda-val", "2.5",
+        "--mu-star", "0.4",    # Invalid mu*
+        "--f-omega", "1.35",
+    ]
     proc = subprocess.run(cmd, capture_output=True, text=True)
     assert proc.returncode == 2
     err = json.loads(proc.stderr)
@@ -159,8 +204,16 @@ def test_cli_enhanced_error_messages():
     assert "Coulomb pseudopotential range" in err["error"]
     
     # Test f_omega validation with context
-    cmd[8] = "0.12"   # Reset mu*
-    cmd[10] = "2.0"   # Invalid f_omega
+    cmd = [
+        sys.executable,
+        "-m",
+        "quantum_rtsc_protocol.cli",
+        "calc",
+        "--omega-log", "120",
+        "--lambda-val", "2.5",
+        "--mu-star", "0.12",
+        "--f-omega", "2.0",   # Invalid f_omega
+    ]
     proc = subprocess.run(cmd, capture_output=True, text=True)
     assert proc.returncode == 2
     err = json.loads(proc.stderr)
