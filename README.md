@@ -6,6 +6,7 @@
 [![DOI](https://img.shields.io/badge/DOI-pending-orange.svg)](https://github.com/grapheneaffiliate/quantum-rtsc-protocol)
 
 **Open-source protocol for room-temperature superconductivity in hydrogen-intercalated graphene/h-BN heterostructures**
+
 If ω_log ≥ 150 meV, μ* ≤ 0.12, and λ_eff ≥ 3.0 (no double-counting), then by Allen–Dynes T_c ≥ 300 K
 
 🎯 **Goal**: Achieve Tc ≥ 300K using conventional Eliashberg physics  
