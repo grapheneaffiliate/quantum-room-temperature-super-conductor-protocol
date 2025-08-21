@@ -9,12 +9,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      MPLBACKEND: Agg   # headless matplotlib
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: "3.10"
 
@@ -24,8 +26,8 @@ jobs:
         pip install -r requirements.txt
         pip install pytest
 
-    - name: Run tests
-      run: pytest
+    - name: Run unit tests
+      run: pytest -q
 
     - name: Run demo pipeline
       run: |
@@ -33,7 +35,11 @@ jobs:
         test -s out/demo/rtsc_results.json
         test -s out/demo/rtsc_analysis_report.md
         test -s out/demo/rtsc_analysis_dashboard.png
-        python -c "import json; d=json.load(open('out/demo/rtsc_results.json')); assert 'timestamp' in d and 'tc_estimate_K' in d and 'success_probability' in d"
+        python - << 'PY'
+        import json, sys
+        d = json.load(open('out/demo/rtsc_results.json'))
+        assert 'timestamp' in d and 'tc_prediction' in d and 'success_assessment' in d
+        PY
 
     - name: Upload demo artifacts
       uses: actions/upload-artifact@v4

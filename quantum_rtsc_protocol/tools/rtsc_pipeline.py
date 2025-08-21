@@ -573,14 +573,14 @@ def demo():
     """Run pipeline demo with synthetic data."""
     # Use our synthetic α²F data
     input_file = "examples/sample_data/synthetic_alpha2f.csv"
-    output_dir = "examples/pipeline_demo"
+    output_dir = "out/demo"
     
     print("🧪 Running RTSC Pipeline Demo with synthetic data...")
     
     pipeline = RTSCPipeline(output_dir)
     results = pipeline.run_complete_analysis(input_file)
     
-    print("\n📋 Demo completed! Check examples/pipeline_demo/ for all outputs.")
+    print(f"\n📋 Demo completed! Check {output_dir}/ for all outputs.")
 
 @app.command()
 def quick_check(

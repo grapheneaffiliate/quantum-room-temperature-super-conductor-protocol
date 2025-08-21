@@ -5,7 +5,7 @@ PYTHON=python
 .PHONY: demo analyze clean
 
 demo:
-\t$(PYTHON) quantum_rtsc_protocol/tools/rtsc_pipeline.py --demo --out out/demo
+\t$(PYTHON) quantum_rtsc_protocol/tools/rtsc_pipeline.py demo
 
 analyze:
 \t@if [ -z "$(in)" ]; then \\
