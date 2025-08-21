@@ -14,7 +14,7 @@ clean:
 	rm -rf out/demo out/analysis .pytest_cache .mypy_cache __pycache__ */__pycache__
 
 demo:
-	$(PYTHON) quantum_rtsc_protocol/tools/rtsc_pipeline.py --demo --out out/demo
+	python -m quantum_rtsc_protocol.tools.rtsc_pipeline --demo --out out/demo
 
 analyze:
 	@if [ -z "$(in)" ]; then \
