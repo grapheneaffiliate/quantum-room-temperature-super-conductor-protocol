@@ -1,0 +1,124 @@
+Testing quantum-rtsc-protocol CI pipeline
+============================================================
+
+1. Running unit tests...
+Running: python -m pytest tests/ -v --tb=short
+============================================================
+STDOUT:
+============================= test session starts =============================
+platform win32 -- Python 3.11.0, pytest-8.3.5, pluggy-1.5.0 -- C:\Users\atchi\Desktop\lc_mcp_app\LC_MCP_APP\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\atchi\Desktop\lc_mcp_app\quantum-rtsc-protocol
+configfile: pyproject.toml
+plugins: anyio-4.9.0, langsmith-0.4.14, asyncio-1.1.0, cov-6.2.1, mock-3.14.0
+asyncio: mode=Mode.STRICT, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 47 items
+
+tests/test_calculations.py::test_tc_calculation_basic PASSED             [  2%]
+tests/test_calculations.py::test_gap_calculation PASSED                  [  4%]
+tests/test_calculations.py::test_multi_channel_lambda PASSED             [  6%]
+tests/test_calculations.py::test_omega_log_calculation PASSED            [  8%]
+tests/test_calculations.py::test_f_omega_calculation PASSED              [ 10%]
+tests/test_calculations.py::test_validation_pass PASSED                  [ 12%]
+tests/test_calculations.py::test_validation_fail PASSED                  [ 14%]
+tests/test_calculations.py::test_synthetic_data_generation PASSED        [ 17%]
+tests/test_calculations.py::test_parameter_optimization PASSED           [ 19%]
+tests/test_calculations.py::test_sensitivity_analysis PASSED             [ 21%]
+tests/test_calculator.py::test_tc_monotonic_lambda PASSED                [ 23%]
+tests/test_cli.py::test_cli_runs FAILED                                  [ 25%]
+tests/test_enhanced_calculator.py::TestGuardRails::test_negative_lambda_eff PASSED [ 27%]
+tests/test_enhanced_calculator.py::TestGuardRails::test_mu_star_out_of_range PASSED [ 29%]
+tests/test_enhanced_calculator.py::TestGuardRails::test_negative_omega PASSED [ 31%]
+tests/test_enhanced_calculator.py::TestGuardRails::test_negative_f_omega PASSED [ 34%]
+tests/test_enhanced_calculator.py::TestGuardRails::test_unphysical_denominator PASSED [ 36%]
+tests/test_enhanced_calculator.py::TestMonotonicity::test_tc_increases_with_lambda PASSED [ 38%]
+tests/test_enhanced_calculator.py::TestMonotonicity::test_tc_increases_with_omega PASSED [ 40%]
+tests/test_enhanced_calculator.py::TestMonotonicity::test_tc_decreases_with_mu_star PASSED [ 42%]
+tests/test_enhanced_calculator.py::TestMonotonicity::test_tc_increases_with_f_omega PASSED [ 44%]
+tests/test_enhanced_calculator.py::TestGoldenCases::test_baseline_278k PASSED [ 46%]
+tests/test_enhanced_calculator.py::TestGoldenCases::test_enhanced_spectral_296k PASSED [ 48%]
+tests/test_enhanced_calculator.py::TestGoldenCases::test_high_coupling_312k PASSED [ 51%]
+tests/test_enhanced_calculator.py::TestGoldenCases::test_target_300k PASSED [ 53%]
+tests/test_enhanced_calculator.py::TestInverseFunctions::test_lambda_for_tc_basic PASSED [ 55%]
+tests/test_enhanced_calculator.py::TestInverseFunctions::test_lambda_for_tc_with_f_omega PASSED [ 57%]
+tests/test_enhanced_calculator.py::TestInverseFunctions::test_lambda_for_tc_impossible_target FAILED [ 59%]
+tests/test_enhanced_calculator.py::TestCouplingChannels::test_coupling_channels_basic PASSED [ 61%]
+tests/test_enhanced_calculator.py::TestCouplingChannels::test_negative_channels PASSED [ 63%]
+tests/test_enhanced_calculator.py::TestCouplingChannels::test_channel_warnings PASSED [ 65%]
+tests/test_enhanced_calculator.py::TestRTSCCalculatorEnhanced::test_calculate_tc_consistency PASSED [ 68%]
+tests/test_enhanced_calculator.py::TestRTSCCalculatorEnhanced::test_gap_calculation_strong_coupling PASSED [ 70%]
+tests/test_enhanced_calculator.py::TestRTSCCalculatorEnhanced::test_parameter_validation_rtsc_criteria PASSED [ 72%]
+tests/test_enhanced_calculator.py::TestNumericalStability::test_extreme_parameters PASSED [ 74%]
+tests/test_enhanced_calculator.py::TestNumericalStability::test_lambda_for_tc_convergence PASSED [ 76%]
+tests/test_enhanced_calculator.py::TestNumericalStability::test_boundary_conditions FAILED [ 78%]
+tests/test_enhanced_calculator.py::TestCLIInterface::test_cli_imports PASSED [ 80%]
+tests/test_enhanced_calculator.py::TestCLIInterface::test_standalone_functions_available PASSED [ 82%]
+tests/test_regression.py::test_tc_golden_values PASSED                   [ 85%]
+tests/test_regression.py::test_lambda_inverse PASSED                     [ 87%]
+tests/test_regression.py::test_monotonicity PASSED                       [ 89%]
+tests/test_regression.py::test_denominator_guard PASSED                  [ 91%]
+tests/test_results_schema.py::test_results_schema PASSED                 [ 93%]
+tests/test_validators.py::test_transport_demo PASSED                     [ 95%]
+tests/test_validators.py::test_suscept_demo PASSED                       [ 97%]
+tests/test_validators.py::test_raman_demo PASSED                         [100%]
+
+================================== FAILURES ===================================
+________________________________ test_cli_runs ________________________________
+tests\test_cli.py:7: in test_cli_runs
+    subprocess.check_call([sys.executable, str(script_path), "calc", "--omega-log-mev", "135"])
+..\..\..\AppData\Local\Programs\Python\Python311\Lib\subprocess.py:413: in check_call
+    raise CalledProcessError(retcode, cmd)
+E   subprocess.CalledProcessError: Command '['C:\\Users\\atchi\\Desktop\\lc_mcp_app\\LC_MCP_APP\\venv\\Scripts\\python.exe', 'C:\\Users\\atchi\\Desktop\\lc_mcp_app\\quantum-rtsc-protocol\\quantum_rtsc_protocol\\tools\\rtsc_calculator.py', 'calc', '--omega-log-mev', '135']' returned non-zero exit status 2.
+---------------------------- Captured stderr call -----------------------------
+Usage: rtsc_calculator.py [OPTIONS] COMMAND [ARGS]...
+
+Try 'rtsc_calculator.py --help' for help.
+
++- Error ---------------------------------------------------------------------+
+
+Traceback (most recent call last):
+| No such command 'calc'.                                                     |
+
++-----------------------------------------------------------------------------+
+
+__________ TestInverseFunctions.test_lambda_for_tc_impossible_target __________
+tests\test_enhanced_calculator.py:154: in test_lambda_for_tc_impossible_target
+    assert result > 10.0, f"Expected very high lambda for impossible target, got {result}"
+E   AssertionError: Expected very high lambda for impossible target, got 5.0
+E   assert 5.0 > 10.0
+_______________ TestNumericalStability.test_boundary_conditions _______________
+tests\test_enhanced_calculator.py:260: in test_boundary_conditions
+    tc_boundary = allen_dynes_tc(140, 0.121, 0.12)
+quantum_rtsc_protocol\tools\rtsc_calculator.py:95: in allen_dynes_tc
+    return allen_dynes_tc_new(*args, **kwargs)
+  File "C:\Users\atchi\Desktop\lc_mcp_app\quantum-rtsc-protocol\run_tests.py", line 91, in <module>
+quantum_rtsc_protocol\tools\rtsc_calculator.py:128: in allen_dynes_tc_new
+    raise ValueError("Unphysical input: denominator \u2264 0 (\u03bb_eff too small or \u03bc* too large)")
+E   ValueError: Unphysical input: denominator \u2264 0 (\u03bb_eff too small or \u03bc* too large)
+============================== warnings summary ===============================
+tests/test_enhanced_calculator.py::TestInverseFunctions::test_lambda_for_tc_impossible_target
+  C:\\Users\\atchi\\Desktop\\lc_mcp_app\\quantum-rtsc-protocol\\quantum_rtsc_protocol\\tools\\rtsc_calculator.py:176: UserWarning: Solution may need \u03bb_eff > 5.0\n    warnings.warn(f"Solution may need \u03bb_eff > {lam_max}")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_cli.py::test_cli_runs - subprocess.CalledProcessError: Comm...
+FAILED tests/test_enhanced_calculator.py::TestInverseFunctions::test_lambda_for_tc_impossible_target
+FAILED tests/test_enhanced_calculator.py::TestNumericalStability::test_boundary_conditions
+=================== 3 failed, 44 passed, 1 warning in 3.38s ===================
+
+STDERR:
+C:\Users\atchi\Desktop\lc_mcp_app\LC_MCP_APP\venv\Lib\site-packages\pytest_asyncio\plugin.py:211: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+
+Return code: 1
+============================================================
+    sys.exit(main())
+             ^^^^^^
+  File "C:\Users\atchi\Desktop\lc_mcp_app\quantum-rtsc-protocol\run_tests.py", line 44, in main
+    print(f"\u274c Unit tests failed with code {ret}")
+  File "C:\Users\atchi\AppData\Local\Programs\Python\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 0: character maps to <undefined>
