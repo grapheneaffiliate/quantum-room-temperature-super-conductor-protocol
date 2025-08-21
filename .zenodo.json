@@ -1,0 +1,30 @@
+{
+  "title": "Quantum RTSC Protocol: Reproducible Room-Temperature Superconductivity Pipeline",
+  "upload_type": "software",
+  "description": "Open-source protocol for room-temperature superconductivity in hydrogen-intercalated graphene/h-BN heterostructures. Includes canonical JSON schema, reproducible demo artifacts, CI validation, and analysis tools implementing the multi-channel Allen–Dynes equation.",
+  "creators": [
+    {
+      "name": "Graphene Affiliate",
+      "affiliation": "Independent Researcher",
+      "orcid": "0000-0002-1825-0097"
+    }
+  ],
+  "keywords": [
+    "superconductivity",
+    "Allen–Dynes",
+    "Eliashberg",
+    "graphene",
+    "reproducibility",
+    "schema",
+    "CI/CD"
+  ],
+  "license": "MIT",
+  "version": "1.0.0",
+  "related_identifiers": [
+    {
+      "relation": "isSupplementTo",
+      "identifier": "https://github.com/grapheneaffiliate/quantum-rtsc-protocol"
+    }
+  ],
+  "notes": "This release (v1.0.0) includes schema-backed outputs, reproducible demo artifacts, CI validation, and developer Makefile targets."
+}
