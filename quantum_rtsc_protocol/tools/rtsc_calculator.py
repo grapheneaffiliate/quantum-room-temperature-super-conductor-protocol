@@ -686,27 +686,27 @@ app = typer.Typer(help="RTSC Calculator CLI")
 
 @app.command()
 def calculate(
-    omega: float = typer.Option(140.0, "--omega", help="ω_log in meV"),
-    lambda_eff: float = typer.Option(2.7, "--lambda", help="λ_eff coupling strength"),
-    mu_star: float = typer.Option(0.10, "--mu", help="μ* Coulomb pseudopotential"),
-    f_omega: float = typer.Option(1.0, "--fomega", help="f_ω spectral enhancement factor")
+    omega: float = typer.Option(140.0, "--omega", help="omega_log in meV"),
+    lambda_eff: float = typer.Option(2.7, "--lambda", help="lambda_eff coupling strength"),
+    mu_star: float = typer.Option(0.10, "--mu", help="mu* Coulomb pseudopotential"),
+    f_omega: float = typer.Option(1.0, "--fomega", help="f_omega spectral enhancement factor")
 ):
     """Calculate Tc using Allen-Dynes formula."""
     try:
         tc = allen_dynes_tc(omega, lambda_eff, mu_star, f_omega)
         gap = RTSCCalculator().calculate_gap(tc, lambda_eff)
         
-        print(f"Input: ω_log={omega} meV, λ_eff={lambda_eff}, μ*={mu_star}, f_ω={f_omega}")
-        print(f"Result: Tc = {tc:.1f} K, Δ(0) = {gap:.1f} meV")
-        print(f"2Δ/kBTc = {2*gap/(0.0862*tc):.2f}")
+        print(f"Input: omega_log={omega} meV, lambda_eff={lambda_eff}, mu*={mu_star}, f_omega={f_omega}")
+        print(f"Result: Tc = {tc:.1f} K, Delta(0) = {gap:.1f} meV")
+        print(f"2Delta/kBTc = {2*gap/(0.0862*tc):.2f}")
         
         # Validation
         calc = RTSCCalculator()
         validation = calc.validate_rtsc_parameters(omega, lambda_eff, mu_star, f_omega)
         if validation['overall_pass']:
-            print("✅ RTSC criteria: PASS")
+            print("RTSC criteria: PASS")
         else:
-            print("❌ RTSC criteria: FAIL")
+            print("RTSC criteria: FAIL")
             for key, value in validation.items():
                 if not value and key != 'overall_pass':
                     print(f"  - {key}: FAIL")
@@ -718,17 +718,17 @@ def calculate(
 @app.command()
 def inverse(
     target_tc: float = typer.Option(300.0, "--tc", help="Target Tc in K"),
-    omega: float = typer.Option(140.0, "--omega", help="ω_log in meV"),
-    mu_star: float = typer.Option(0.10, "--mu", help="μ* Coulomb pseudopotential"),
-    f_omega: float = typer.Option(1.0, "--fomega", help="f_ω spectral enhancement factor")
+    omega: float = typer.Option(140.0, "--omega", help="omega_log in meV"),
+    mu_star: float = typer.Option(0.10, "--mu", help="mu* Coulomb pseudopotential"),
+    f_omega: float = typer.Option(1.0, "--fomega", help="f_omega spectral enhancement factor")
 ):
-    """Calculate λ_eff needed for target Tc."""
+    """Calculate lambda_eff needed for target Tc."""
     try:
         lambda_needed = lambda_for_tc(target_tc, omega, mu_star, f_omega)
         tc_check = allen_dynes_tc(omega, lambda_needed, mu_star, f_omega)
         
         print(f"Target: Tc = {target_tc} K")
-        print(f"Required: λ_eff = {lambda_needed:.3f}")
+        print(f"Required: lambda_eff = {lambda_needed:.3f}")
         print(f"Verification: Tc = {tc_check:.1f} K")
         
     except ValueError as e:
