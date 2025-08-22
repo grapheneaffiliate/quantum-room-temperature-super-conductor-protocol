@@ -38,7 +38,7 @@ class ADResult:
     mu_star: float
 
 def trapz(x: NDArray[np.float64], y: NDArray[np.float64]) -> float:
-    return float(np.trapz(y, x))
+    return float(np.trapezoid(y, x))
 
 def moments_from_a2F(omega_meV: NDArray[np.float64],
                      a2F: NDArray[np.float64]) -> Tuple[float, float, float]:

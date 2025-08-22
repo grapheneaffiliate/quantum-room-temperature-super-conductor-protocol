@@ -22,6 +22,7 @@ dependencies = [
 
 [project.scripts]
 rtsc = "quantum_rtsc_protocol.cli:main"
+rtsc-eliashberg = "quantum_rtsc_protocol.tools.eliashberg_runner:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
