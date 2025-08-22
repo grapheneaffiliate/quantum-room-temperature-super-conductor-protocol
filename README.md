@@ -21,7 +21,7 @@ A comprehensive, reproducible **Room-Temperature Superconductivity (RTSC) Protoc
 - **μ* ≤ 0.12**
 - **f_ω ≥ 1.35**
 
-**Theoretical Prediction**: If ω_log ≥ 150 meV, μ* ≤ 0.12, and λ_eff ≥ 3.0 (no double-counting), then by Allen–Dynes T_c ≥ 300 K
+**Theoretical Prediction**: If ω_log ≥ 150 meV, μ* ≤ 0.12, and λ_eff ≥ 3.0 (no double-counting), then by Allen–Dynes T_c ≥ 300 K.
 
 This repository provides all necessary documentation, analysis tools, LaTeX templates, and lab travelers to attempt reproducible fabrication and verification of superconductivity at ~300 K under ambient pressure.
 
@@ -30,13 +30,12 @@ This repository provides all necessary documentation, analysis tools, LaTeX temp
 ## 📂 Key Files
 
 - [Fabrication SOP](docs/Fabrication_SOP.md)
-- [RTSC Cover Page](docs/RTSC_CoverPage.tex)
-- [MiniDeck Slides](docs/RTSC_MiniDeck.tex)
-- [One-Page Traveler](traveler/RTSC_Traveler.tex)
-- [Mask Generator](quantum_rtsc_protocol/masks/mask_generator.py)
-- [Superconductivity Analysis](analysis/supercon_analysis.py)
-- [Enhanced RTSC Calculator](quantum_rtsc_protocol/tools/rtsc_calculator.py)
-- [Eliashberg Runner](quantum_rtsc_protocol/tools/eliashberg_runner.py)
+- [RTSC Cover Page](RTSC_CoverPage.tex)
+- [MiniDeck Slides](RTSC_MiniDeck.tex)
+- [One-Page Traveler](RTSC_Traveler.tex)
+- [Eliashberg Runner](tools/eliashberg_runner.py)
+- [Enhanced RTSC Calculator](tools/rtsc_calculator.py)
+- [Measurement Tools](tools/measurement_tools.py)
 - [Unit Tests](tests/test_calculations.py)
 
 ## 📂 Repository Structure
@@ -49,25 +48,21 @@ quantum-room-temperature-superconductor-protocol/
 ├── .github/
 │   └── workflows/ci.yml       # CI/CD pipeline
 ├── docs/
-│   ├── Fabrication_SOP.md     # Fabrication Standard Operating Procedure
-│   ├── RTSC_CoverPage.tex     # Protocol cover page
-│   └── RTSC_MiniDeck.tex      # Beamer mini-deck
-├── traveler/
-│   └── RTSC_Traveler.tex      # One-page traveler
-├── quantum_rtsc_protocol/     # Main Python package
-│   ├── tools/                 # Analysis and calculation tools
-│   ├── analysis/              # Analysis modules
-│   └── masks/                 # Mask generation tools
-├── tools/                     # Legacy CLI tools (shims)
-│   └── eliashberg_runner.py   # Backward compatibility shim
-├── schemas/
-│   └── ad-screen-1.schema.json # JSON schema validation
+│   └── Fabrication_SOP.md     # Fabrication Standard Operating Procedure
+├── traveler/                  # PDF/TeX traveler outputs (if present)
+├── tools/
+│   ├── eliashberg_runner.py   # α²F → Tc pipeline & CLI
+│   ├── rtsc_calculator.py     # Enhanced RTSC calculator (CLI)
+│   ├── spectroscopy_tools.py  # Raman/FTIR helpers
+│   └── measurement_tools.py   # Transport/Meissner helpers
 ├── examples/
 │   ├── sample_data/           # Example datasets
 │   └── validation_runs/       # Reference measurements
+├── quantum_rtsc_protocol/     # Python package (helpers, schemas)
+├── schemas/
 └── tests/
     ├── test_calculations.py   # Unit tests
-    └── test_eliashberg_runner.py # CLI tests
+    └── test_protocol.py       # Protocol validation
 ```
 
 ---
@@ -82,9 +77,9 @@ pip install -r requirements.txt
 ```
 
 ### Usage
-- Compile LaTeX documents in `docs/` and `traveler/`
-- Use `analysis/supercon_analysis.ipynb` for data analysis
-- Generate GDS masks with `masks/mask_generator.py`
+- Compile LaTeX docs in `docs/` and traveler TeX at repo root
+- Run Eliashberg/Allen–Dynes CLI: `python tools/eliashberg_runner.py --help`
+- Calculator: `python tools/rtsc_calculator.py --help`
 - Run tests with:
 ```bash
 pytest tests/
