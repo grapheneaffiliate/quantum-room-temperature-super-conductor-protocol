@@ -292,14 +292,14 @@ class RTSCCalculator:
             return 0.0
             
         # Calculate λ for normalization
-        lambda_total = 2 * np.trapezoid(alpha2f_clean / freq_clean, freq_clean)
+        lambda_total = 2 * np.trapz(alpha2f_clean / freq_clean, freq_clean)
         
         if lambda_total <= 0:
             return 0.0
             
         # Logarithmic average
         integrand = (alpha2f_clean / freq_clean) * np.log(freq_clean)
-        omega_log = np.exp(2 * np.trapezoid(integrand, freq_clean) / lambda_total)
+        omega_log = np.exp(2 * np.trapz(integrand, freq_clean) / lambda_total)
         
         return omega_log
     
@@ -321,8 +321,8 @@ class RTSCCalculator:
         high_mask = frequencies >= omega_cutoff
         
         # Calculate spectral weights
-        lambda_low = 2 * np.trapezoid(alpha2f[low_mask] / frequencies[low_mask], frequencies[low_mask])
-        lambda_high = 2 * np.trapezoid(alpha2f[high_mask] / frequencies[high_mask], frequencies[high_mask])
+        lambda_low = 2 * np.trapz(alpha2f[low_mask] / frequencies[low_mask], frequencies[low_mask])
+        lambda_high = 2 * np.trapz(alpha2f[high_mask] / frequencies[high_mask], frequencies[high_mask])
         
         if lambda_low <= 0:
             return np.inf if lambda_high > 0 else 1.0
