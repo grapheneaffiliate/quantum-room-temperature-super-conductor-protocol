@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ad-screen-1",
+  "type": "object",
+  "required": ["schema_version", "runner_version", "payload"],
+  "properties": {
+    "schema_version": { "const": "ad-screen-1" },
+    "runner_version": { "type": "string" },
+    "payload": {
+      "type": "object",
+      "required": ["AD"],
+      "properties": {
+        "mode": { "enum": ["params", "alpha2F"] },
+        "inputs": { "type": "object" },
+        "derived": {
+          "type": "object",
+          "properties": {
+            "lambda_eff": { "type": "number", "minimum": 0 },
+            "omega_log_meV": { "type": "number", "minimum": 0 },
+            "omega2_meV": { "type": "number", "minimum": 0 },
+            "omega2_over_omegalog": { "type": "number", "minimum": 0 }
+          },
+          "additionalProperties": true
+        },
+        "AD": {
+          "type": "object",
+          "required": ["Tc_K","f1","f2","exponent","lambda_eff","mu_star","omega_log_meV"],
+          "properties": {
+            "Tc_K": { "type": "number", "minimum": 0 },
+            "f1": { "type": "number", "minimum": 0 },
+            "f2": { "type": "number", "minimum": 0 },
+            "exponent": { "type": "number" },
+            "lambda_eff": { "type": "number", "minimum": 0 },
+            "mu_star": { "type": "number", "minimum": 0 },
+            "omega_log_meV": { "type": "number", "minimum": 0 },
+            "omega2_over_omegalog": { "type": "number", "minimum": 0 }
+          },
+          "additionalProperties": false
+        },
+        "shape_metrics": {
+          "type": "object",
+          "properties": {
+            "peak_count": { "type": "integer", "minimum": 0 },
+            "entropy": { "type": "number", "minimum": 0 },
+            "omega2_over_omegalog": { "type": "number", "minimum": 0 },
+            "lambda_from_alpha2F": { "type": "number", "minimum": 0 },
+            "omega_log_meV": { "type": "number", "minimum": 0 },
+            "omega2_meV": { "type": "number", "minimum": 0 }
+          },
+          "additionalProperties": true
+        },
+        "warnings": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

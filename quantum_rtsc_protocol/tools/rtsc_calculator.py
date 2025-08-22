@@ -689,7 +689,7 @@ def calculate(
     omega: float = typer.Option(140.0, "--omega", help="omega_log in meV"),
     lambda_eff: float = typer.Option(2.7, "--lambda", help="lambda_eff coupling strength"),
     mu_star: float = typer.Option(0.10, "--mu", help="mu* Coulomb pseudopotential"),
-    f_omega: float = typer.Option(1.35, "--fomega", help="f_omega spectral enhancement factor")
+    f_omega: float = typer.Option(1.0, "--fomega", help="f_omega spectral enhancement factor")
 ):
     """Calculate Tc using Allen-Dynes formula."""
     try:
