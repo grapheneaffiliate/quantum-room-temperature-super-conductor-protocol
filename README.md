@@ -1,4 +1,4 @@
-[![CI](https://github.com/grapheneaffiliate/unified-mcp-system-v3/actions/workflows/ci.yml/badge.svg)](https://github.com/grapheneaffiliate/unified-mcp-system-v3/actions/workflows/ci.yml)
+[![CI](https://github.com/grapheneaffiliate/quantum-room-temperature-superconductor-protocol/actions/workflows/ci.yml/badge.svg)](https://github.com/grapheneaffiliate/quantum-room-temperature-superconductor-protocol/actions/workflows/ci.yml)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1234567.svg)](https://doi.org/10.5281/zenodo.1234567)
 
 # 🧪 Quantum Room Temperature Superconductor Protocol via Multi-Channel Allen–Dynes Equation
@@ -32,11 +32,12 @@ This repository provides all necessary documentation, analysis tools, LaTeX temp
 - [Fabrication SOP](docs/Fabrication_SOP.md)
 - [RTSC Cover Page](RTSC_CoverPage.tex)
 - [MiniDeck Slides](RTSC_MiniDeck.tex)
-- [One-Page Traveler](RTSC_Traveler.tex)
+- [One-Page Traveler](traveler/RTSC_Traveler.tex)
 - [Eliashberg Runner](tools/eliashberg_runner.py)
-- [Enhanced RTSC Calculator](tools/rtsc_calculator.py)
-- [Measurement Tools](tools/measurement_tools.py)
-- [Unit Tests](tests/test_calculations.py)
+- [Enhanced RTSC Calculator](quantum_rtsc_protocol/tools/rtsc_calculator.py)
+- [Mask Generator](tools/mask_generator.py)
+- [Superconductivity Analysis](analysis/supercon_analysis.py)
+- [Unit Tests](tests/)
 
 ## 📂 Repository Structure
 
