@@ -6,6 +6,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
+*Tested on Python 3.9, 3.10, 3.11, and 3.12*
+
 **Open-source protocol for room-temperature superconductivity in hydrogen-intercalated graphene/h-BN heterostructures**
 
 🎯 **Goal**: Achieve Tc ≥ 300K using conventional Eliashberg physics  
@@ -18,7 +20,8 @@ A comprehensive, reproducible **Room-Temperature Superconductivity (RTSC) Protoc
 - **λ_eff ≈ 2.5–2.7**
 - **μ* ≤ 0.12**
 - **f_ω ≥ 1.35**
-If ω_log ≥ 150 meV, μ* ≤ 0.12, and λ_eff ≥ 3.0 (no double-counting), then by Allen–Dynes T_c ≥ 300 K
+
+**Theoretical Prediction**: If ω_log ≥ 150 meV, μ* ≤ 0.12, and λ_eff ≥ 3.0 (no double-counting), then by Allen–Dynes T_c ≥ 300 K
 
 This repository provides all necessary documentation, analysis tools, LaTeX templates, and lab travelers to attempt reproducible fabrication and verification of superconductivity at ~300 K under ambient pressure.
 
@@ -38,7 +41,7 @@ This repository provides all necessary documentation, analysis tools, LaTeX temp
 ## 📂 Repository Structure
 
 ```
-quantum-rtsc-protocol/
+quantum-room-temperature-superconductor-protocol/
 ├── README.md                  # Overview and instructions
 ├── requirements.txt           # Python dependencies
 ├── pyproject.toml             # Python packaging
@@ -95,12 +98,20 @@ pytest tests/
 
 - **Fabrication**: Two-sided hydrogenation of graphene, encapsulation with Al₂O₃/SiNₓ, Pd trapping, stress tuning
 - **Measurements**: Raman, FTIR, STS/IETS, 4-probe transport, AC susceptibility, optional Josephson
-- **Acceptance Criteria**:
-  - ω_log ≥ 120 meV
-  - Δ(300 K) ≥ 58 meV
-  - R → 0 with reproducibility
-  - Meissner onset coincident with Tc
 - **Artifact Rejection**: Ionic conduction, heating, magnetic illusions, filament shorts
+
+### Acceptance Criteria
+
+| Parameter | Measurement Method | Target Value | Pass/Fail Gate |
+|-----------|-------------------|--------------|----------------|
+| ω_log | FTIR/Raman spectroscopy | ≥ 120 meV | Required |
+| λ_eff | α²F(ω) analysis | 2.5–2.7 | Required |
+| μ* | Transport fitting | ≤ 0.12 | Required |
+| f_ω | Spectral weight ratio | ≥ 1.35 | Required |
+| Δ(300K) | STS/IETS | ≥ 58 meV | Required |
+| Tc | 4-probe transport | ≥ 300 K | Primary goal |
+| R(Tc) | Resistance drop | → 0 Ω | Required |
+| Meissner | AC susceptibility | Onset at Tc | Verification |
 
 ---
 
