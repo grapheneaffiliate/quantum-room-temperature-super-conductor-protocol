@@ -33,9 +33,10 @@ This repository provides all necessary documentation, analysis tools, LaTeX temp
 - [RTSC Cover Page](docs/RTSC_CoverPage.tex)
 - [MiniDeck Slides](docs/RTSC_MiniDeck.tex)
 - [One-Page Traveler](traveler/RTSC_Traveler.tex)
-- [Mask Generator](masks/mask_generator.py)
+- [Mask Generator](quantum_rtsc_protocol/masks/mask_generator.py)
 - [Superconductivity Analysis](analysis/supercon_analysis.py)
-- [Enhanced RTSC Calculator](tools/rtsc_calculator.py)
+- [Enhanced RTSC Calculator](quantum_rtsc_protocol/tools/rtsc_calculator.py)
+- [Eliashberg Runner](quantum_rtsc_protocol/tools/eliashberg_runner.py)
 - [Unit Tests](tests/test_calculations.py)
 
 ## 📂 Repository Structure
@@ -50,26 +51,23 @@ quantum-room-temperature-superconductor-protocol/
 ├── docs/
 │   ├── Fabrication_SOP.md     # Fabrication Standard Operating Procedure
 │   ├── RTSC_CoverPage.tex     # Protocol cover page
-│   ├── RTSC_MiniDeck.tex      # Beamer mini-deck
+│   └── RTSC_MiniDeck.tex      # Beamer mini-deck
 ├── traveler/
-│   ├── RTSC_Traveler.tex      # One-page traveler
-│   └── RTSC_Traveler.pdf
-├── masks/
-│   └── mask_generator.py      # GDS mask generator
-├── analysis/
-│   ├── supercon_analysis.py   # Analysis tools
-│   ├── supercon_analysis.ipynb# Jupyter notebook
-│   └── data_templates/        # Data collection templates
-├── tools/
-│   ├── rtsc_calculator.py     # Enhanced RTSC calculator
-│   ├── spectroscopy_tools.py  # Raman/FTIR analysis
-│   └── measurement_tools.py   # Transport/Meissner analysis
+│   └── RTSC_Traveler.tex      # One-page traveler
+├── quantum_rtsc_protocol/     # Main Python package
+│   ├── tools/                 # Analysis and calculation tools
+│   ├── analysis/              # Analysis modules
+│   └── masks/                 # Mask generation tools
+├── tools/                     # Legacy CLI tools (shims)
+│   └── eliashberg_runner.py   # Backward compatibility shim
+├── schemas/
+│   └── ad-screen-1.schema.json # JSON schema validation
 ├── examples/
 │   ├── sample_data/           # Example datasets
 │   └── validation_runs/       # Reference measurements
 └── tests/
     ├── test_calculations.py   # Unit tests
-    └── test_protocol.py       # Protocol validation
+    └── test_eliashberg_runner.py # CLI tests
 ```
 
 ---
@@ -79,7 +77,7 @@ quantum-room-temperature-superconductor-protocol/
 ### Installation
 ```bash
 git clone https://github.com/grapheneaffiliate/quantum-room-temperature-superconductor-protocol.git
-cd quantum-rtsc-protocol
+cd quantum-room-temperature-superconductor-protocol
 pip install -r requirements.txt
 ```
 
