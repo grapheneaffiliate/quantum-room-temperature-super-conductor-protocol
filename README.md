@@ -35,9 +35,8 @@ This repository provides all necessary documentation, analysis tools, LaTeX temp
 - [One-Page Traveler](traveler/RTSC_Traveler.tex)
 - [Eliashberg Runner](tools/eliashberg_runner.py)
 - [Enhanced RTSC Calculator](quantum_rtsc_protocol/tools/rtsc_calculator.py)
-- [Mask Generator](tools/mask_generator.py)
-- [Superconductivity Analysis](analysis/supercon_analysis.py)
-- [Unit Tests](tests/)
+- [Analysis Tools](quantum_rtsc_protocol/analysis/)
+- [Unit Tests](tests/test_calculations.py)
 
 ## 📂 Repository Structure
 
@@ -50,17 +49,14 @@ quantum-room-temperature-superconductor-protocol/
 │   └── workflows/ci.yml       # CI/CD pipeline
 ├── docs/
 │   └── Fabrication_SOP.md     # Fabrication Standard Operating Procedure
-├── traveler/                  # PDF/TeX traveler outputs (if present)
+├── traveler/                  # Traveler outputs (PDF/TeX if present)
 ├── tools/
-│   ├── eliashberg_runner.py   # α²F → Tc pipeline & CLI
-│   ├── rtsc_calculator.py     # Enhanced RTSC calculator (CLI)
-│   ├── spectroscopy_tools.py  # Raman/FTIR helpers
-│   └── measurement_tools.py   # Transport/Meissner helpers
+│   └── eliashberg_runner.py   # α²F → Tc pipeline & CLI
 ├── examples/
 │   ├── sample_data/           # Example datasets
 │   └── validation_runs/       # Reference measurements
 ├── quantum_rtsc_protocol/     # Python package (helpers, schemas)
-├── schemas/
+├── schemas/                   # JSON result schemas
 └── tests/
     ├── test_calculations.py   # Unit tests
     └── test_protocol.py       # Protocol validation
