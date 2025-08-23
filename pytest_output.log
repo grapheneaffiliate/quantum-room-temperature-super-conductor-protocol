@@ -1,0 +1,65 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.0, pytest-8.4.1, pluggy-1.6.0 -- C:\Users\atchi\Desktop\lc_mcp_app\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\atchi\Desktop\lc_mcp_app\quantum-rtsc-protocol
+configfile: pyproject.toml
+collecting ... collected 51 items
+
+tests/test_calculations.py::test_tc_calculation_basic PASSED             [  1%]
+tests/test_calculations.py::test_gap_calculation PASSED                  [  3%]
+tests/test_calculations.py::test_multi_channel_lambda PASSED             [  5%]
+tests/test_calculations.py::test_omega_log_calculation PASSED            [  7%]
+tests/test_calculations.py::test_f_omega_calculation PASSED              [  9%]
+tests/test_calculations.py::test_validation_pass PASSED                  [ 11%]
+tests/test_calculations.py::test_validation_fail PASSED                  [ 13%]
+tests/test_calculations.py::test_synthetic_data_generation PASSED        [ 15%]
+tests/test_calculations.py::test_parameter_optimization PASSED           [ 17%]
+tests/test_calculations.py::test_sensitivity_analysis PASSED             [ 19%]
+tests/test_calculator.py::test_tc_monotonic_lambda PASSED                [ 21%]
+tests/test_cli.py::test_cli_runs PASSED                                  [ 23%]
+tests/test_cli_calc.py::test_cli_calc_synthetic PASSED                   [ 25%]
+tests/test_cli_calc.py::test_cli_calc_error_handling PASSED              [ 27%]
+tests/test_cli_calc.py::test_cli_calc_units_conversion PASSED            [ 29%]
+tests/test_cli_calc.py::test_cli_calc_provenance PASSED                  [ 31%]
+tests/test_enhanced_calculator.py::TestGuardRails::test_negative_lambda_eff PASSED [ 33%]
+tests/test_enhanced_calculator.py::TestGuardRails::test_mu_star_out_of_range PASSED [ 35%]
+tests/test_enhanced_calculator.py::TestGuardRails::test_negative_omega PASSED [ 37%]
+tests/test_enhanced_calculator.py::TestGuardRails::test_negative_f_omega PASSED [ 39%]
+tests/test_enhanced_calculator.py::TestGuardRails::test_unphysical_denominator PASSED [ 41%]
+tests/test_enhanced_calculator.py::TestMonotonicity::test_tc_increases_with_lambda PASSED [ 43%]
+tests/test_enhanced_calculator.py::TestMonotonicity::test_tc_increases_with_omega PASSED [ 45%]
+tests/test_enhanced_calculator.py::TestMonotonicity::test_tc_decreases_with_mu_star PASSED [ 47%]
+tests/test_enhanced_calculator.py::TestMonotonicity::test_tc_increases_with_f_omega PASSED [ 49%]
+tests/test_enhanced_calculator.py::TestGoldenCases::test_baseline_278k PASSED [ 50%]
+tests/test_enhanced_calculator.py::TestGoldenCases::test_enhanced_spectral_296k PASSED [ 52%]
+tests/test_enhanced_calculator.py::TestGoldenCases::test_high_coupling_312k PASSED [ 54%]
+tests/test_enhanced_calculator.py::TestGoldenCases::test_target_300k PASSED [ 56%]
+tests/test_enhanced_calculator.py::TestInverseFunctions::test_lambda_for_tc_basic PASSED [ 58%]
+tests/test_enhanced_calculator.py::TestInverseFunctions::test_lambda_for_tc_with_f_omega PASSED [ 60%]
+tests/test_enhanced_calculator.py::TestInverseFunctions::test_lambda_for_tc_impossible_target PASSED [ 62%]
+tests/test_enhanced_calculator.py::TestCouplingChannels::test_coupling_channels_basic PASSED [ 64%]
+tests/test_enhanced_calculator.py::TestCouplingChannels::test_negative_channels PASSED [ 66%]
+tests/test_enhanced_calculator.py::TestCouplingChannels::test_channel_warnings PASSED [ 68%]
+tests/test_enhanced_calculator.py::TestRTSCCalculatorEnhanced::test_calculate_tc_consistency PASSED [ 70%]
+tests/test_enhanced_calculator.py::TestRTSCCalculatorEnhanced::test_gap_calculation_strong_coupling PASSED [ 72%]
+tests/test_enhanced_calculator.py::TestRTSCCalculatorEnhanced::test_parameter_validation_rtsc_criteria PASSED [ 74%]
+tests/test_enhanced_calculator.py::TestNumericalStability::test_extreme_parameters PASSED [ 76%]
+tests/test_enhanced_calculator.py::TestNumericalStability::test_lambda_for_tc_convergence PASSED [ 78%]
+tests/test_enhanced_calculator.py::TestNumericalStability::test_boundary_conditions PASSED [ 80%]
+tests/test_enhanced_calculator.py::TestCLIInterface::test_cli_imports PASSED [ 82%]
+tests/test_enhanced_calculator.py::TestCLIInterface::test_standalone_functions_available PASSED [ 84%]
+tests/test_regression.py::test_tc_golden_values PASSED                   [ 86%]
+tests/test_regression.py::test_lambda_inverse PASSED                     [ 88%]
+tests/test_regression.py::test_monotonicity PASSED                       [ 90%]
+tests/test_regression.py::test_denominator_guard PASSED                  [ 92%]
+tests/test_results_schema.py::test_results_schema PASSED                 [ 94%]
+tests/test_validators.py::test_transport_demo PASSED                     [ 96%]
+tests/test_validators.py::test_suscept_demo PASSED                       [ 98%]
+tests/test_validators.py::test_raman_demo PASSED                         [100%]
+
+============================== warnings summary ===============================
+tests/test_enhanced_calculator.py::TestInverseFunctions::test_lambda_for_tc_impossible_target
+  C:\\Users\\atchi\\Desktop\\lc_mcp_app\\quantum-rtsc-protocol\\quantum_rtsc_protocol\\tools\\rtsc_calculator.py:176: UserWarning: Solution may need \u03bb_eff > 5.0\n    warnings.warn(f"Solution may need \u03bb_eff > {lam_max}")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 51 passed, 1 warning in 3.61s ========================

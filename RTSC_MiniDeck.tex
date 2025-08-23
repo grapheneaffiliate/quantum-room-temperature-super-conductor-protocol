@@ -1,0 +1,59 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\title{The Triple-Channel Superconductor}
+\subtitle{Hydrogen, Plasmons, and Flat Bands for 300 K at Ambient}
+\author{RTSC Protocol Team}
+\date{August 2025}
+
+\begin{document}
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Why This Can Work at 300 K (Ambient)}
+\begin{itemize}
+  \item \textbf{Target tuple (Allen--Dynes)}: $\omega_{\log}\!\ge\!120$ meV,\; $\lambda_{\rm eff}\!\approx\!2.5$--$2.7$,\; $\mu^*\!\le\!0.12$,\; $f_\omega\!\ge\!1.35$.
+  \item \textbf{Multi-channel boost}: $\lambda_{\rm eff}=\lambda_H+\lambda_{\rm plasmon}+\lambda_{\rm flat}$.
+  \item \textbf{Material platform}: two-sided H-graphene (graphane-like) in h-BN, stiff Al$_2$O$_3$/SiN$_x$ caps.
+  \item \textbf{Design levers}: high-$\omega$ H modes (FTIR 800--1300 cm$^{-1}$), DOS via gating/strain, screened $\mu^*$.
+  \item \textbf{Proof plan}: STS/IETS $\Rightarrow$ $\Delta\ge58$--80 meV; 4-probe $R(T)$ drop $>$99\% at 300--315 K; Meissner \& (opt.) Josephson.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Lab Plan \& Artifact Rejection (1-page traveler in action)}
+\begin{columns}[T]
+\begin{column}{0.55\textwidth}
+\textbf{7-day fab:}
+\begin{enumerate}
+  \item h-BN/graphene stack, anneal
+  \item Two-sided H at 350--420$^\circ$C
+  \item Pd trap, Al$_2$O$_3$ (20 nm), SiN$_x$ (80 nm; compressive)
+  \item Pattern Cr/Au; Dayem bridge; gate
+\end{enumerate}
+\textbf{7-day test:}
+\begin{enumerate}
+  \item Raman/FTIR $\Rightarrow$ $\omega_{\log}$
+  \item STS/IETS $\Rightarrow$ $\Delta$, $\alpha^2F(\omega)$
+  \item 4-probe $R(T)$, AC-$\chi$, (opt.) Josephson
+\end{enumerate}
+\end{column}
+\begin{column}{0.45\textwidth}
+\textbf{Must-pass gates:}
+\begin{itemize}
+  \item $\omega_{\log}\!\ge\!120$ meV (high-$\omega$ peaked)
+  \item $\Delta(300\text{ K})\!\ge\!58$ meV, $2\Delta/k_BT_c\!\ge\!4.5$
+  \item $R\!\to\!0$ \& Meissner coincide $\pm1$ K
+\end{itemize}
+\textbf{Artifact kills:}
+\begin{itemize}
+  \item Remove ionic liquid; solid-gate replica
+  \item STS gap uniformity map
+  \item Pulsed vs DC I--V; B-field collapse
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+\end{document}

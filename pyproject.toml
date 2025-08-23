@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quantum_rtsc_protocol"
+version = "0.1.0"
+description = "Open-source protocol for room-temperature superconductivity in hydrogen-intercalated graphene/h-BN heterostructures"
+authors = [
+    { name = "RTSC Protocol Team" }
+]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "numpy==1.26.4",
+    "scipy==1.13.1",
+    "pandas==2.1.4",
+    "matplotlib==3.8.4",
+    "gdspy==1.6.13",
+    "seaborn==0.13.2"
+]
+
+[project.scripts]
+rtsc = "quantum_rtsc_protocol.cli:main"
+rtsc-eliashberg = "quantum_rtsc_protocol.tools.eliashberg_runner:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["quantum_rtsc_protocol*"]

@@ -1,0 +1,5 @@
+0000000000000000000000000000000000000000 18555155f21d5529e745fce05750b2ae23e28716 Tim McGirl <130793843+grapheneaffiliate@users.noreply.github.com> 1755907001 -0400	branch: Created from HEAD
+18555155f21d5529e745fce05750b2ae23e28716 fd4c6815f200b896b6ba0fe987b2fa171dabfc33 Tim McGirl <130793843+grapheneaffiliate@users.noreply.github.com> 1755907300 -0400	commit: README fixes; CI hardening; examples+schema test; hygiene files; CLI docs
+fd4c6815f200b896b6ba0fe987b2fa171dabfc33 97d34a3865786bbea1d36802d745defd873ea6d9 Tim McGirl <130793843+grapheneaffiliate@users.noreply.github.com> 1755907768 -0400	commit: fix: Update demo JSON to match actual schema structure
+97d34a3865786bbea1d36802d745defd873ea6d9 ec337dd19f19ac332c89cba0561b5e3140a24330 Tim McGirl <130793843+grapheneaffiliate@users.noreply.github.com> 1755907831 -0400	commit: docs: Update JSON schema example to match actual structure
+ec337dd19f19ac332c89cba0561b5e3140a24330 899401755aa689062dbc8a414cb7c31af5d57df1 Tim McGirl <130793843+grapheneaffiliate@users.noreply.github.com> 1755911119 -0400	commit: fix: Update Key Files links to point to actual file locations

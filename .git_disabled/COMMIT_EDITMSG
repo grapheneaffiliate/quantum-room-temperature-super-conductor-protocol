@@ -1,0 +1,6 @@
+docs: Fix README links and structure to match actual repository
+
+- Fix Key Files links to point to existing files
+- Update repository structure to show actual directories
+- Remove references to non-existent masks/ and analysis/ folders
+- All links now resolve correctly without 404s

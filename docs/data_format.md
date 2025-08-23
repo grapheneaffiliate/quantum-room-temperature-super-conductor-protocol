@@ -1,0 +1,1 @@
+# Data Format for α²F(ω) CSV\n\nRequired columns:\n- frequency_meV (float, meV)\n- alpha2f (float, dimensionless)\n\nOptional columns:\n- channel (string: low/mid/high)\n\nNotes:\n- Frequencies must be > 0\n- α²F values must be ≥ 0\n- Units: meV for frequency, dimensionless for α²F\n
