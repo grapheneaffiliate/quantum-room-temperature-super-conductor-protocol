@@ -1,0 +1,17 @@
+{
+  "schema_version": "ad-screen-1",
+  "runner_version": "1.0.1",
+  "inputs": {
+    "mu_star": 0.12,
+    "lambda_eff": 3.0,
+    "omega_log_mev": 150.0,
+    "f_omega": 1.35,
+    "units": "cm^-1",
+    "alpha2F_source": "examples/sample_data/alpha2F_demo.csv"
+  },
+  "results": {
+    "tc_estimate_K": 300.5,
+    "success_probability": 0.70
+  },
+  "notes": "Computed from α²F with units=cm^-1"
+}
