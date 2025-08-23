@@ -106,21 +106,29 @@ Typical output (abbreviated):
 ```json
 {
   "schema_version": "ad-screen-1",
-  "runner_version": "1.x",
-  "inputs": {
-    "mu_star": 0.12,
-    "lambda_eff": 3.0,
-    "omega_log_mev": 150.0,
-    "f_omega": 1.35
-  },
-  "results": {
-    "tc_estimate_K": 300.5,
-    "success_probability": 0.7
-  },
-  "notes": "Computed from α²F with units=cm^-1"
+  "runner_version": "1.0.1",
+  "payload": {
+    "mode": "alpha2F",
+    "inputs": {
+      "mu_star": 0.12,
+      "lambda_eff": 3.0,
+      "omega_log_mev": 150.0,
+      "f_omega": 1.35,
+      "units": "cm^-1"
+    },
+    "AD": {
+      "Tc_K": 300.5,
+      "lambda_eff": 3.0,
+      "mu_star": 0.12,
+      "omega_log_meV": 150.0,
+      "f1": 1.04,
+      "f2": 1.15,
+      "exponent": -1.04
+    }
+  }
 }
 ```
-See `/schemas/` for full field constraints.
+See `/schemas/` for full field constraints and complete structure.
 
 ---
 
