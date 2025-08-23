@@ -1,0 +1,40 @@
+{
+  "schema_version": "ad-screen-1",
+  "runner_version": "1.0.1",
+  "payload": {
+    "mode": "alpha2F",
+    "inputs": {
+      "mu_star": 0.12,
+      "lambda_eff": 3.0,
+      "omega_log_mev": 150.0,
+      "f_omega": 1.35,
+      "units": "cm^-1",
+      "alpha2F_source": "examples/sample_data/alpha2F_demo.csv"
+    },
+    "derived": {
+      "lambda_eff": 3.0,
+      "omega_log_meV": 150.0,
+      "omega2_meV": 180.0,
+      "omega2_over_omegalog": 1.2
+    },
+    "AD": {
+      "Tc_K": 300.5,
+      "f1": 1.04,
+      "f2": 1.15,
+      "exponent": -1.04,
+      "lambda_eff": 3.0,
+      "mu_star": 0.12,
+      "omega_log_meV": 150.0,
+      "omega2_over_omegalog": 1.2
+    },
+    "shape_metrics": {
+      "peak_count": 2,
+      "entropy": 0.85,
+      "omega2_over_omegalog": 1.2,
+      "lambda_from_alpha2F": 3.0,
+      "omega_log_meV": 150.0,
+      "omega2_meV": 180.0
+    },
+    "warnings": []
+  }
+}

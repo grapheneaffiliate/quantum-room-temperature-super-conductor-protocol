@@ -32,12 +32,11 @@ This repository provides all necessary documentation, analysis tools, LaTeX temp
 - [Fabrication SOP](docs/Fabrication_SOP.md)
 - [RTSC Cover Page](RTSC_CoverPage.tex)
 - [MiniDeck Slides](RTSC_MiniDeck.tex)
-- [One-Page Traveler](traveler/RTSC_Traveler.tex)
-- [Eliashberg Runner](tools/eliashberg_runner.py)
-- [Enhanced RTSC Calculator](quantum_rtsc_protocol/tools/rtsc_calculator.py)
-- [Mask Generator](tools/mask_generator.py)
-- [Superconductivity Analysis](analysis/supercon_analysis.py)
-- [Unit Tests](tests/)
+- [One-Page Traveler](RTSC_Traveler.tex)
+- [Eliashberg Runner (CLI)](tools/eliashberg_runner.py)
+- [Enhanced RTSC Calculator (CLI)](tools/rtsc_calculator.py)
+- [Measurement Tools](tools/measurement_tools.py)
+- [Unit Tests](tests/test_calculations.py)
 
 ## 📂 Repository Structure
 
@@ -50,17 +49,17 @@ quantum-room-temperature-superconductor-protocol/
 │   └── workflows/ci.yml       # CI/CD pipeline
 ├── docs/
 │   └── Fabrication_SOP.md     # Fabrication Standard Operating Procedure
-├── traveler/                  # PDF/TeX traveler outputs (if present)
+├── traveler/                  # Traveler outputs (PDF/TeX if present)
 ├── tools/
 │   ├── eliashberg_runner.py   # α²F → Tc pipeline & CLI
-│   ├── rtsc_calculator.py     # Enhanced RTSC calculator (CLI)
+│   ├── rtsc_calculator.py     # RTSC calculator (CLI)
 │   ├── spectroscopy_tools.py  # Raman/FTIR helpers
 │   └── measurement_tools.py   # Transport/Meissner helpers
 ├── examples/
 │   ├── sample_data/           # Example datasets
 │   └── validation_runs/       # Reference measurements
 ├── quantum_rtsc_protocol/     # Python package (helpers, schemas)
-├── schemas/
+├── schemas/                   # JSON result schemas
 └── tests/
     ├── test_calculations.py   # Unit tests
     └── test_protocol.py       # Protocol validation
@@ -85,6 +84,51 @@ pip install -r requirements.txt
 ```bash
 pytest tests/
 ```
+
+#### CLI Usage Examples
+1) Eliashberg/Allen–Dynes runner (α²F → Tc):
+```bash
+python tools/eliashberg_runner.py \
+  --alpha2F_csv examples/sample_data/alpha2F_demo.csv \
+  --units cm^-1 \
+  --mu_star 0.12 \
+  --output_json examples/validation_runs/tc_demo.json
+```
+2) RTSC calculator:
+```bash
+python tools/rtsc_calculator.py \
+  --wlog_mev 150 --lambda_eff 3.0 --mu_star 0.12
+```
+Outputs include estimated Tc (K) and key intermediates complying with schemas in `schemas/`.
+
+## Results JSON schema (short form)
+Typical output (abbreviated):
+```json
+{
+  "schema_version": "ad-screen-1",
+  "runner_version": "1.0.1",
+  "payload": {
+    "mode": "alpha2F",
+    "inputs": {
+      "mu_star": 0.12,
+      "lambda_eff": 3.0,
+      "omega_log_mev": 150.0,
+      "f_omega": 1.35,
+      "units": "cm^-1"
+    },
+    "AD": {
+      "Tc_K": 300.5,
+      "lambda_eff": 3.0,
+      "mu_star": 0.12,
+      "omega_log_meV": 150.0,
+      "f1": 1.04,
+      "f2": 1.15,
+      "exponent": -1.04
+    }
+  }
+}
+```
+See `/schemas/` for full field constraints and complete structure.
 
 ---
 

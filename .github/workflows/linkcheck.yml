@@ -1,0 +1,23 @@
+name: linkcheck
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  markdown-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Markdown links
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: >
+            --no-progress --verbose
+            --accept 200,206,429
+            --exclude-mail
+            --base .
+            README.md docs/**/*.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
